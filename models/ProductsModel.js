@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 
 const ProductSchema = new mongoose.Schema({
-    ID_Product: { type: Number, required: true, unique: true },
+    ID_Product: { type: Number, required: true, unique: true }, // Thay đổi từ ObjectId sang Number
     name: { type: String, required: true },
     description: { type: String },
     price: { type: Number, required: true },
     image: { type: String },
-    }, 
-    { timestamps: true });
+}, 
+{ timestamps: true });
 
-module.exports = mongoose.model('Products', ProductSchema);
+const Product = mongoose.model('Product', ProductSchema);
+
+module.exports = Product;
+

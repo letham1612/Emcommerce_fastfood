@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const OrderDetailSchema = new mongoose.Schema({
-    ID_OrderDetail: { type: mongoose.Schema.Types.ObjectId, required: true },
-    ID_Order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
+    ID_OrderDetail: { type: Number, required: true, unique:true },
+    ID_Order: { type: Number, ref: 'Order', required: true },
     ID_Product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
     quantity: { type: Number, required: true }
 }, {
