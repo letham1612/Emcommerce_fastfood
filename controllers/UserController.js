@@ -1,84 +1,117 @@
 const User = require('../models/UserModel'); // Đảm bảo đường dẫn đúng tới file model
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-// Tạo người dùng mới
-exports.createUser = async (req, res) => {
-    try {
-      // Kiểm tra xem ID_User đã tồn tại hay chưa
-      const existingUser = await User.findOne({ ID_User: req.body.ID_User });
-      if (existingUser) {
-        return res.status(400).json({ message: 'ID_User đã tồn tại. Vui lòng chọn ID_User khác.' });
+const register = async (req, res) => {
+  const { username, email, password, resPassword } = req.body;
+
+  if (password !== resPassword) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+  }
+
+  try {
+      const userExists = await User.findOne({ $or: [{ email }, { username }] });
+      if (userExists) {
+          return res.status(400).json({ message: 'Username or Email already exists' });
       }
-  
-      const user = new User(req.body);
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const newUser = new User({
+          username,
+          email,
+          password: hashedPassword
+      });
+
+      const savedUser = await newUser.save();
+      res.status(201).json({ message: 'User registered successfully', user: savedUser });
+  } catch (err) {
+      res.status(500).json({ message: 'Error registering user', error: err.message });
+  }
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(400).json({ message: 'Invalid email or password' });
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ message: 'Invalid email or password' });
+      }
+
+      const secretKey = process.env.JWT_SECRET || 'default_secret_key';
+
+      const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
+
+      res.json({
+          message: 'Login successful',
+          token,
+          user: {
+              id: user._id,
+              username: user.username,
+              email: user.email
+          }
+      });
+  } catch (err) {
+      res.status(500).json({ message: 'Error logging in', error: err.message });
+  }
+};
+const changePassword = async (req, res) => {
+  const { email, oldPassword, newPassword, resNewPassword } = req.body;
+  if (newPassword !== resNewPassword) {
+      return res.status(400).json({ message: 'New passwords do not match' });
+  }
+
+  if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ message: 'New password must be at least 8 characters long' });
+  }
+
+  try {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      if (!oldPassword || typeof oldPassword !== 'string' || oldPassword.trim().length === 0) {
+          return res.status(400).json({ message: 'Current password is required and must be a non-empty string' });
+      }
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isMatch) {
+          return res.status(400).json({ message: 'Invalid current password' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+      user.password = hashedPassword;
       await user.save();
-      console.log('User created:', user); 
-      res.status(201).json({ message: 'Tạo người dùng thành công', user: user });
-    } catch (error) {
-      console.error('Error creating user:', error.message);
-      res.status(400).json({ message: error.message });
-    }
-  };
 
-// Lấy tất cả người dùng
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    console.log('Retrieved all users:', users);
-    res.status(200).json(users);
-  } catch (error) {
-    console.error('Error retrieving users:', error.message);
-    res.status(500).json({ message: error.message });
+      res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+      console.error('Error updating password:', err);
+      res.status(500).json({ message: 'Error updating password', error: err.message });
   }
 };
 
-// Lấy người dùng theo ID_User
-exports.getUserById = async (req, res) => {
+const getUser = async (req, res) => {
   try {
-    const user = await User.findOne({ ID_User: req.params.id }); // Sử dụng ID_User để tìm kiếm
-    if (!user) {
-      console.log('User not found with ID_User:', req.params.id);
-      return res.status(404).json({ message: 'Người dùng không tìm thấy' });
-    }
-    console.log('Retrieved user:', user); 
-    res.status(200).json(user);
-  } catch (error) {
-    console.error('Error retrieving user:', error.message);
-    res.status(500).json({ message: error.message });
+      const user = await User.find();
+      res.status(200).json(user);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
   }
 };
 
-// Cập nhật người dùng theo ID_User
-exports.updateUser = async (req, res) => {
-  try {
-    const user = await User.findOneAndUpdate(
-      { ID_User: req.params.id }, // Sử dụng ID_User để tìm kiếm
-      req.body,
-      { new: true }
-    );
-    if (!user) {
-      console.log('User not found for update with ID_User:', req.params.id);
-      return res.status(404).json({ message: 'Người dùng không tìm thấy' });
-    }
-    console.log('User updated:', user);
-    res.status(200).json({ message: 'Cập nhật người dùng thành công', user: user });
-  } catch (error) {
-    console.error('Error updating user:', error.message);
-    res.status(400).json({ message: error.message });
-  }
-};
-
-// Xóa người dùng theo ID_User
-exports.deleteUser = async (req, res) => {
-  try {
-    const user = await User.findOneAndDelete({ ID_User: req.params.id }); // Sử dụng ID_User để tìm kiếm
-    if (!user) {
-      console.log('User not found for deletion with ID_User:', req.params.id);
-      return res.status(404).json({ message: 'Người dùng không tìm thấy' });
-    }
-    console.log('User deleted:', user);
-    res.status(200).json({ message: 'Xóa người dùng thành công', user: user });
-  } catch (error) {
-    console.error('Error deleting user:', error.message);
-    res.status(500).json({ message: error.message });
-  }
+module.exports = {
+  register,
+  login,
+  changePassword,
+  getUser,
 };
