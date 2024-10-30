@@ -1,0 +1,100 @@
+/* Reset Password Component Scoped Styles */
+.reset-password-container {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 100px;
+}
+
+.reset-password-sidebar {
+    width: 300px;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.reset-password-sidebar img {
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+}
+
+.reset-password-sidebar h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.reset-password-sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.reset-password-sidebar a:hover {
+    text-decoration: underline;
+}
+
+.reset-password-content {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+}
+
+.reset-password-content h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.reset-password-content .input-container {
+    position: relative;
+    margin-bottom: 20px;
+    text-align: left;
+
+}
+
+.reset-password-content input[type="password"],
+.reset-password-content input[type="text"] {
+    width: calc(100% - 30px);
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.reset-password-content .eye-icon {
+    position: absolute;
+    right: 50px;
+    top: 60%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.reset-password-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #e30613;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+}
+
+.reset-password-btn:hover {
+    background-color: #c10510;
+}

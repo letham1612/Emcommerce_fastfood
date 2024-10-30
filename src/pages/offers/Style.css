@@ -1,0 +1,208 @@
+@import url(https://db.onlinewebfonts.com/c/7de69a716652a3d82e8e7099fa1ec6a2?family=National+2+Condensed+Bold);
+
+
+.offer-Body {
+    width: 100%;
+    padding-top: 89px;
+}
+
+.offer-headerSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #202124;
+    color: white;
+    height: 70px;
+    width: 100%;
+    gap: 20px;
+}
+
+.offer-headerSection-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    color: white;
+    padding: 10px 30px 10px 30px;
+    border-radius: 30px;
+}
+
+.offer-bannerSection {
+    width: 100%;
+    height: 280px;
+    background-image: url("https://online.kfc.co.in/static/media/offer_deals_banner.777f20e1.svg");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 90px;
+    font-family: "National 2 Condensed Bold";
+}
+
+.offer-cardsSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.offer-headingSection {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 120px;
+    font-size: 55px;
+    font-weight: bolder;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+    letter-spacing: .01px;
+    font-family: "National 2 Condensed Bold";
+}
+
+.offer-3lingLogo {
+    height: 40px;
+}
+
+.offer-blankSpace {
+    display: flex;
+    width: 80%;
+    height: 60px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+.offer-cards-Box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    min-height: 100vh;
+    padding-bottom: 100px;
+    row-gap: 30px;
+}
+
+.offer-box1 {
+    height: 420px;
+    width: 333px;
+    background-color: #202124;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 15px;
+    border-radius: 30px;
+    margin: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.offer-box2 {
+    height: 420px;
+    width: 333px;
+    background-color: #E4002B;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 15px;
+    border-radius: 30px;
+    margin: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.offer-cards-button {
+    padding: 10px 30px 10px 30px;
+    background-color: transparent;
+    color: white;
+    border-color: white;
+    border-radius: 25px;
+}
+
+.offer-cards-button:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+
+.offer-box3 {
+    height: 430px;
+    width: 330px;
+    background-color: white;
+    border-radius: 30px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .offer-box3-img {
+        width: 100%;
+        border-radius: 30px 30px 0px 0px;
+    }
+
+    .offer-box3-title {
+        color: red;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .offer-box3-text {
+        overflow: hidden;
+    }
+
+    .offer-box3-buttonSection {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: white;
+        z-index: 1;
+        height: 60px;
+        border-radius: 0px 0px 30px 30px;
+        position: relative;
+        margin-top: -18px;
+    }
+
+    .offer-box3-button {
+        padding: 10px 30px 10px 30px;
+        background-color: transparent;
+        color: black;
+        border-color: black;
+        border-radius: 25px;
+        cursor: pointer;
+    }
+
+    .offer-box3-button:hover {
+        background-color: black;
+        color: white;
+    }
+
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media only screen and (max-width:1382px) {
+    .offer-cards-Box {
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+@media only screen and (max-width:425px) {
+    .offer-cards-Box {
+        width: 100%;
+    }
+
+    .offer-headingSection {
+        font-size: 40px;
+    }
+
+}

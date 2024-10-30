@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+.NavMainContainer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+}
+
+.headerSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.setLocation {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.setLocationButton {
+    color: white;
+    background-color: black;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgb(212, 209, 209);
+    border-bottom: 1px solid rgb(212, 209, 209);
+    height: 90px;
+}
+
+.hamburger {
+    display: none;
+}
+
+.headerLogo {
+    margin: 38px 44.26px 39.48px 130px;
+    cursor: pointer;
+}
+
+.navItemLeft {
+    display: flex;
+    gap: 30px;
+    width: 52%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.navItemLeft a {
+    text-decoration: none;
+    color: black;
+}
+
+.navItemRight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.accountItems {
+    padding: 3px 20px 3px 0px;
+    border-right: 1px solid gray;
+}
+
+.signInButton {
+    font-weight: bold;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bucketCartItems {
+    padding-right: 10px;
+}
+
+.headerIconButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cartIcon {
+    display: flex;
+    height: 80px;
+    width: 80px;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://images.ctfassets.net/wtodlh47qxpt/6qtBVFuno7pdwOQ9RIvYm9/d13e9b7242980972cf49beddde2cc295/bucket_cart_icon.svg");
+}
+
+.cartIcon-img {
+    height: 100%;
+}
+.signInButton img {
+    width: 30px; 
+    height: 30px; 
+}
+.cartIconCount {
+    text-align: end;
+}
+
+@media only screen and (max-width : 550px) {
+    .setLocation {
+        font-size: 8px;
+        padding: 1px;
+    }
+
+    .headerPrice {
+        display: none;
+    }
+
+}
+
+@media only screen and (max-width : 1024px) {
+
+    .nav {
+        justify-content: space-between;
+        padding: 0px 20px 0px 20px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .headerLogo {
+        margin: 38px 0px 39.48px 0px;
+    }
+
+    .accountItems {
+        display: none;
+ 
+        
+    }
+
+    .navItemLeft {
+        display: none;
+    }
+
+    .bucketCartItems {
+        padding-right: 20px;
+    }
+
+}

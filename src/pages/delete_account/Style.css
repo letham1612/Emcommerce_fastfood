@@ -1,0 +1,95 @@
+/* src/pages/account/Style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 100px; 
+}
+
+.sidebar {
+    width: 300px;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.sidebar img {
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+}
+
+.content h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+/* Styles specific to Delete Account confirmation */
+.delete-account-container {
+    text-align: left;
+}
+
+.delete-account-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.delete-account-message {
+    font-size: 16px;
+}
+
+.delete-account-list {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.delete-account-list li {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.delete-account-button {
+    background-color: #e60023;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+}
