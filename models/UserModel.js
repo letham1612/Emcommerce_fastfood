@@ -6,6 +6,8 @@ const UserSchema = new mongoose.Schema({
     phoneNumber: { type: String, unique: true },
     password: { type: String, required: true },
     address: { type: String },
+    isadmin: {type: Boolean, default: false, require: true},
+    refreshToken: { type: String }
     }, 
 { timestamps: true });
 

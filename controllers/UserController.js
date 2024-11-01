@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const register = async (req, res) => {
-  const { username, email, password, resPassword } = req.body;
+  const { username, email, phoneNumber, password, resPassword } = req.body;
 
   if (password !== resPassword) {
       return res.status(400).json({ message: 'Passwords do not match' });
@@ -21,6 +21,7 @@ const register = async (req, res) => {
       const newUser = new User({
           username,
           email,
+          phoneNumber,
           password: hashedPassword
       });
 
@@ -32,34 +33,62 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-      const user = await User.findOne({ email });
-      if (!user) {
-          return res.status(400).json({ message: 'Invalid email or password' });
-      }
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-          return res.status(400).json({ message: 'Invalid email or password' });
-      }
-
-      const secretKey = process.env.JWT_SECRET || 'default_secret_key';
-
-      const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
-
-      res.json({
-          message: 'Login successful',
-          token,
-          user: {
-              id: user._id,
-              username: user.username,
-              email: user.email
-          }
-      });
-  } catch (err) {
-      res.status(500).json({ message: 'Error logging in', error: err.message });
-  }
-};
+    const { email, phoneNumber, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+  
+        const secretKey = process.env.JWT_SECRET || 'default_secret_key';
+        const refreshSecretKey = process.env.JWT_REFRESH_SECRET || 'default_refresh_secret_key';
+  
+        const token = jwt.sign({ id: user._id, username: user.username, isadmin: user.isadmin }, secretKey, { expiresIn: '1h' });
+        const refreshToken = jwt.sign({ id: user._id, username: user.username, isadmin: user.isadmin }, refreshSecretKey, { expiresIn: '7d' });
+  
+        // Lưu refreshToken vào cơ sở dữ liệu
+        user.refreshToken = refreshToken; 
+        await user.save();
+        res.json({
+            message: 'Login successful',
+            token,
+            refreshToken,
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Error logging in', error: err.message });
+    }
+  };
+  const refreshAccessToken = async (req, res) => {
+    const { refreshToken } = req.body;
+    const refreshSecretKey = process.env.JWT_REFRESH_SECRET || 'default_refresh_secret_key';
+  
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'Refresh token is required' });
+    }
+  
+    try {
+        // Kiểm tra refreshToken hợp lệ và lấy user ID từ đó
+        const decoded = jwt.verify(refreshToken, refreshSecretKey);
+        const user = await User.findById(decoded.id);
+  
+        if (!user || user.refreshToken !== refreshToken) {
+            return res.status(403).json({ message: 'Invalid refresh token' });
+        }
+  
+        // Tạo token mới
+        const secretKey = process.env.JWT_SECRET || 'default_secret_key';
+        const newToken = jwt.sign({ id: user._id, username: user.username, isadmin: user.isadmin }, secretKey, { expiresIn: '1h' });
+  
+        res.json({ token: newToken });
+    } catch (err) {
+        res.status(403).json({ message: 'Invalid refresh token', error: err.message });
+    }
+  };
+  
 const changePassword = async (req, res) => {
   const { email, oldPassword, newPassword, resNewPassword } = req.body;
   if (newPassword !== resNewPassword) {
@@ -114,4 +143,5 @@ module.exports = {
   login,
   changePassword,
   getUser,
+  refreshAccessToken,
 };

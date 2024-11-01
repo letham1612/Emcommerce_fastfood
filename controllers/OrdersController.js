@@ -3,10 +3,10 @@ const Order = require('../models/OrdersModel'); // Đảm bảo đường dẫn 
 // Tạo đơn hàng mới
 exports.createOrder = async (req, res) => {
     try {
-        const { ID_Order, ID_User, totalAmount } = req.body;
+        const { ID_Order, username, totalAmount } = req.body;
 
         // Kiểm tra xem ID_Order và các trường cần thiết đã có chưa
-        if (!ID_Order || !ID_User || !totalAmount) {
+        if (!ID_Order || !username || !totalAmount) {
             return res.status(400).json({ message: 'Thiếu thông tin cần thiết: ID_Order, ID_User và totalAmount là bắt buộc' });
         }
 
