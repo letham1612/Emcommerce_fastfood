@@ -1,11 +1,11 @@
 // controllers/ProductsController.js
-const Product = require('../models/ProductsModel'); // Đảm bảo đường 
+const Product = require('../models/ProductsModel'); 
 const path = require('path');
 
 // Tạo sản phẩm mới
 exports.createProduct = async (req, res) => {
   try {
-    const { ID_Product, name, description, type, price, newprice, image } = req.body;
+    const { ID_Product, ID_Type, name, description, type, price, newprice, image } = req.body;
     const imagePath = path.join(__dirname, '../assets/images', image);
     // Kiểm tra xem sản phẩm có tồn tại với ID_Product đã cho không
     const existingProduct = await Product.findOne({ ID_Product });
@@ -13,9 +13,14 @@ exports.createProduct = async (req, res) => {
       console.log('ID_Product đã tồn tại:', ID_Product);
       return res.status(400).json({ message: 'ID_Product đã tồn tại, không thể thêm sản phẩm' });
     }
-
+    const existingType = await Type.findOne({ ID_Type });
+    if (!existingType) {
+      console.log('ID_Type không tồn tại:', ID_Type);
+      return res.status(400).json({ message: 'ID_Type không tồn tại, không thể thêm sản phẩm' });
+    }
     const newproduct = new Product(
       { ID_Product, 
+        ID_Type,
         name, 
         description, 
         price,
@@ -102,3 +107,24 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// controllers/ProductsController.js
+exports.getProductsByType = async (req, res) => {
+  try {
+    const ID_Type = req.params.type; // Sử dụng ID_Type từ params
+    const products = await Product.find({ ID_Type });
+
+    if (products.length === 0) {
+      console.log(`No products found for ID_Type: ${ID_Type}`);
+      return res.status(404).json({ message: 'No products found for this type' });
+    }
+
+    console.log(`Retrieved products for ID_Type: ${ID_Type}`, products);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error retrieving products by type:', error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
