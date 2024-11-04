@@ -1,13 +1,13 @@
 // controllers/ProductsController.js
 const Product = require('../models/ProductsModel'); 
-const path = require('path');
+const Type = require('../models/TypesModel');
+// const path = require('path');
 
 // Tạo sản phẩm mới
 exports.createProduct = async (req, res) => {
   try {
     const { ID_Product, ID_Type, name, description, type, price, newprice, image } = req.body;
-    const imagePath = path.join(__dirname, '../assets/images', image);
-    // Kiểm tra xem sản phẩm có tồn tại với ID_Product đã cho không
+    // const imagePath = path.join(__dirname, '../assets/images', image);
     const existingProduct = await Product.findOne({ ID_Product });
     if (existingProduct) {
       console.log('ID_Product đã tồn tại:', ID_Product);
@@ -26,7 +26,7 @@ exports.createProduct = async (req, res) => {
         price,
         newprice,
         type,
-        image: 'file:///' + imagePath
+        image,
        });
     await newproduct.save();
     console.log('Product created:', Product);
