@@ -138,10 +138,124 @@ const getUser = async (req, res) => {
   }
 };
 
+// Cập nhật thông tin người dùng
+const updateUser = async (req, res) => {
+    try {
+        // Lấy token từ header
+        const token = req.headers.authorization?.split(' ')[1]; // Token dạng "Bearer <token>"
+        // Kiểm tra token
+        if (!token) {
+            return res.status(401).json({ message: 'Access denied. No token provided.' });
+        }
+        let decoded; // Khai báo biến decoded
+        // Giải mã token
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key');
+        } catch (error) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+        const userIdFromToken = decoded.id; // ID người dùng được lưu trong token
+        // Lấy ID từ URL
+        const userId = req.params.id;
+        // Kiểm tra nếu ID từ token khác với ID trong URL (bảo mật)
+        if (userId !== userIdFromToken) {
+            return res.status(403).json({ message: 'You are not authorized to update this user.' });
+        }
+        const allowedFields = ['username', 'phoneNumber', 'email', 'address'];
+        const updatedData = {}; // Khởi tạo đối tượng lưu trữ dữ liệu sẽ được cập nhật
+        // Chỉ thêm các trường được phép cập nhật vào updatedData
+        for (const field of allowedFields) {
+            if (req.body[field] !== undefined) {
+                updatedData[field] = req.body[field];
+            }
+        }
+        // Nếu có trường mật khẩu trong req.body, trả về lỗi
+        if (req.body.password) {
+            return res.status(400).json({ message: 'Password cannot be updated via this endpoint.' });
+        }
+        // Tìm người dùng và cập nhật thông tin
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+            new: true, // Trả về tài liệu đã cập nhật
+            runValidators: true, // Chạy xác thực cho các trường
+        });
+        // Kiểm tra xem người dùng có tồn tại không
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({
+            message: 'User updated successfully',
+            user: updatedUser,
+        });
+    } catch (error) {
+        // Ghi log lỗi nếu cần thiết
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+const deleteUser = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Access denied. No token provided.' });
+        }
+        // Giải mã token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key');
+        const userIdFromToken = decoded.id;
+        // Lấy mật khẩu từ yêu cầu
+        const { password } = req.body;
+        // Tìm người dùng theo ID
+        const user = await User.findById(userIdFromToken);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        // Kiểm tra mật khẩu
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(403).json({ message: 'Invalid password' });
+        }
+        // Xóa người dùng
+        const deletedUser = await User.findByIdAndDelete(userIdFromToken);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({
+            message: 'User account deleted successfully',
+            user: deletedUser,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+// Đăng xuất
+const logout = async (req, res) => {
+    const { refreshToken } = req.body;
+    // Nếu không có refreshToken, trả về lỗi
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'No refresh token provided' });
+    }
+    try {
+        // Tìm người dùng dựa trên refreshToken
+        const user = await User.findOne({ refreshToken });
+        if (!user) {
+            return res.status(403).json({ message: 'Invalid refresh token' });
+        }
+        // Xóa refreshToken khỏi cơ sở dữ liệu
+        user.refreshToken = null;
+        await user.save();
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error during logout', error: error.message });
+    }
+};
+
+
 module.exports = {
   register,
   login,
   changePassword,
   getUser,
   refreshAccessToken,
+  updateUser,
+  deleteUser,
+  logout,
 };
