@@ -1,17 +1,29 @@
 const { Types } = require('mongoose');
 const Type = require('../models/TypesModel');
+const { getNextSequence } = require('./CounterController');
+
 
 // Tạo loại sản phẩm mới
 exports.createType = async (req, res) => {
   try {
-    const { ID_Type, Type_name } = req.body;
+    const { Type_name } = req.body;
+
+    // Kiểm tra dữ liệu đầu vào
+    if (!Type_name) {
+      return res.status(400).json({ message: 'Tên loại sản phẩm không được để trống.' });
+    }
+
+    // Lấy ID_Type tự động
+    const ID_Type = await getNextSequence('ID_Type');
+
     const newType = new Type({ ID_Type, Type_name });
     await newType.save();
+
     res.status(201).json({ message: 'Thêm loại sản phẩm thành công', type: newType });
   } catch (error) {
     console.error('Error creating type:', error.message);
-    res.status(400).json({ message: error.message });
-    console.log(Type);  }
+    res.status(500).json({ message: 'Lỗi khi thêm loại sản phẩm: ' + error.message }); // Trả về mã trạng thái 500 nếu có lỗi server
+  }
 };
 
 // Lấy tất cả loại sản phẩm
