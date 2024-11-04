@@ -1,25 +1,27 @@
 const Counter = require('../models/counter');
+const Product = require('../models/productsModel');
+const Type = require('../models/TypesModel');
 
-// Hàm khởi tạo Counter
-const initializeCounter = async () => {
+// Hàm khởi tạo Counter cho cả ID_Type và ID_Product
+const initializeCounters = async () => {
     try {
-        const existingCounter = await Counter.findById('ID_Type'); // Sử dụng findById với ID là chuỗi
-        if (!existingCounter) {
-            const counter = new Counter({ _id: 'ID_Type', sequenceValue: 0 });
-            await counter.save();
-            console.log('Counter initialized for ID_Type.');
-        } else {
-            console.log('Counter for ID_Type already exists.');
+        const counters = ['ID_Type', 'ID_Product'];
+        for (const counter of counters) {
+            const existingCounter = await Counter.findById(counter); // Kiểm tra xem counter đã tồn tại chưa
+            if (!existingCounter) {
+                const newCounter = new Counter({ _id: counter, sequenceValue: 0 });
+                await newCounter.save();
+                console.log(`Counter initialized for ${counter}.`);
+            } else {
+                console.log(`Counter for ${counter} already exists.`);
+            }
         }
     } catch (error) {
-        console.error('Error initializing counter:', error.message);
+        console.error('Error initializing counters:', error.message);
     }
 };
 
-// Gọi hàm khởi tạo khi khởi động ứng dụng
-initializeCounter();
-
-// Hàm để lấy ID tự động
+// Hàm để lấy ID tự động cho một chuỗi bất kỳ
 const getNextSequence = async (sequenceName) => {
     try {
         const sequenceDocument = await Counter.findOneAndUpdate(
@@ -34,9 +36,13 @@ const getNextSequence = async (sequenceName) => {
     }
 };
 
+// Gọi hàm khởi tạo khi khởi động ứng dụng
+initializeCounters();
+
 // Xuất các hàm cần thiết
 module.exports = {
-    initializeCounter,
+    initializeCounters,
     getNextSequence,
 };
+
 

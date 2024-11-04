@@ -13,6 +13,12 @@ exports.createType = async (req, res) => {
       return res.status(400).json({ message: 'Tên loại sản phẩm không được để trống.' });
     }
 
+    // Kiểm tra xem loại sản phẩm với tên đã cho có tồn tại không
+    const existingType = await Type.findOne({ Type_name });
+    if (existingType) {
+      return res.status(400).json({ message: 'Tên loại sản phẩm đã tồn tại.' });
+    }
+
     // Lấy ID_Type tự động
     const ID_Type = await getNextSequence('ID_Type');
 
