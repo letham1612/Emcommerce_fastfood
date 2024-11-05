@@ -3,6 +3,9 @@ import "./Style.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import imgPlaceholder from "../../../../assets/placeholder.webp";
+import { IMAGE_URL } from '../../../../config/ApiConfig';
+import logo from '../../../../assets/logo.png';
+
 
 const SkeletonCard = () => (
   <div className="menu-childCardBody card1-skeleton">
@@ -61,29 +64,22 @@ const Card1 = ({ card, setPurchase, purchase, loading }) => {
         <SkeletonCard />
       ) : (
         <div className="menu-childCardBody">
-          <img src={card.url} alt={card.title} className="offer-cardImg" />
-          <p className="menu-cardTitle">{card.title}</p>
+          <img src={IMAGE_URL+card.image || logo} alt={card.name} className="offer-cardImg" />
+          <p className="menu-cardTitle">{card.name}</p>
           <div className="offer-cardCategory">
             <img
               src="https://online.kfc.co.in/static/media/Non_veg_dot_Icon.d975d1f9.svg"
               alt=""
             />
-            <p>{card.varity}</p>
-            <li>{card.serving}</li>
           </div>
-          <p className="menu-cardPrice">₹ {card.price}</p>
+          <p className="menu-cardPrice"> {card.price.toLocaleString('vi-VN')} VNĐ</p>
           <p className="offer-cardCategory-text">{card.description}</p>
           <div className="offer-button-add">
             <button
               className="offer-card-addToCart"
               onClick={() => handleClick({ card })}
             >
-              Add to Cart
-              <img
-                className="offee-cart-buttonImg"
-                src="https://online.kfc.co.in/static/media/Icon_Add_to_Cart.58b87a9b.svg"
-                alt=""
-              />
+              Thêm vào giỏ hàng
             </button>
           </div>
         </div>

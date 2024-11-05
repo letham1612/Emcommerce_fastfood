@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import {  faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { LOGIN_API } from '../../config/ApiConfig';
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -13,26 +14,60 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("Mỹ Duyên"); // Giả định có một tên người dùng
+  const [firstName, setFirstName] = useState("Con chó Khiêm"); // Giả định có một tên người dùng
 
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    toast.success("Đăng nhập thành công", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "colored",
-    });
-    setTimeout(() => {
-       // Lưu tên người dùng vào localStorage
-      localStorage.setItem('firstName', firstName);
-      navigate("/account-details");
-    }, 2000);
-  };
+
+    try {
+        const response = await fetch(LOGIN_API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+
+        if (!response.ok) {
+          // Thông báo đăng nhập thành công
+          toast.error("Đăng nhập thất bại!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+          });
+            throw new Error("Đăng nhập thất bại!");
+        }
+
+        const data = await response.json();
+        
+        // Thông báo đăng nhập thành công
+        toast.success("Đăng nhập thành công.", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+        });
+        // navigate("/");
+        navigate("/admin");
+
+        setTimeout(() => {
+            // Lưu token người dùng vào localStorage
+            localStorage.setItem('token', data["token"]);
+        }, 2000);
+    } catch (error) {
+        console.error("Lỗi đăng nhập:", error);
+    }
+};
 
   return (
     <div className="login-container">

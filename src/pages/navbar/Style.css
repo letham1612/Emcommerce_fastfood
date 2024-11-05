@@ -51,6 +51,8 @@
 .headerLogo {
     margin: 38px 44.26px 39.48px 130px;
     cursor: pointer;
+    width: 130px; 
+    height: auto;
 }
 
 .navItemLeft {

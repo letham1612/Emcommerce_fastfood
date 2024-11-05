@@ -8,19 +8,59 @@ import Card1 from "./menuCards/card1/Card1";
 import Card2 from "./menuCards/card2/Card2";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import MobSearch from "../../components/mobSearch/MobSearch";
-import menu from "./data";
+import { TYPES_API, PRODUCTSBYTYPE_API } from '../../config/ApiConfig';
+
 
 const Menu = ({ setPurchase, purchase }) => {
-  const [cardData, setCardData] = useState([]);
+  const [combinedData, setCombinedData] = useState([]);
   const [rightNavClass, setRightNavClass] = useState("menu-childBox-left");
 
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchState, setSearchState] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [menuTypes, setMenuTypes] = useState([]);
+  const [productsByType, setProductsByType] = useState({});
 
   // Mobile Menu Search
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const fetchDataTypes = async () => {
+    try {
+      const response = await fetch(TYPES_API, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) throw new Error('Lỗi khi gọi API');
+      const data = await response.json();
+      setMenuTypes(data);
+    } catch (error) {
+      console.error('Lỗi khi lấy dữ liệu:', error);
+    }
+  };
+
+  const fetchProductsByType = async (ID_Type) => {
+    try {
+      const response = await fetch(`${PRODUCTSBYTYPE_API}/${ID_Type}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) throw new Error('Lỗi khi gọi API sản phẩm theo loại');
+      const data = await response.json();
+      
+      data.forEach(product => {
+          combinedData.push(product);
+      });
+      
+      setProductsByType((prev) => ({ ...prev, [ID_Type]: data }));
+    } catch (error) {
+      console.error(`Lỗi khi lấy dữ liệu sản phẩm cho loại ${ID_Type}:`, error);
+    }
+  };
 
   const handleOpenDrawer = () => {
     setIsDrawerOpen(true);
@@ -30,37 +70,22 @@ const Menu = ({ setPurchase, purchase }) => {
     setIsDrawerOpen(false);
   };
 
-  const fetchData = () => {
-    setCardData(menu);
-  };
-
   useEffect(() => {
     setLoading(true);
-    fetchData();
     setLoading(false);
+    fetchDataTypes();
+
+    // setCardData(menu  )
   }, []);
 
-  const combinedData = [];
-  const peri = cardData.peri;
-  const value = cardData.value;
-  const chikenRolls = cardData.chikenRolls;
-  const chikenBuckets = cardData.chikenBuckets;
-  const biryaniBuckets = cardData.biryaniBuckets;
-  const boxMeals = cardData.boxMeals;
-  const burger = cardData.burger;
-  const snacks = cardData.snacks;
-  const beberages = cardData.beberages;
-  if (peri) {
-    combinedData.push(...peri);
-    combinedData.push(...value);
-    combinedData.push(...chikenBuckets);
-    combinedData.push(...chikenRolls);
-    combinedData.push(...biryaniBuckets);
-    combinedData.push(...boxMeals);
-    combinedData.push(...burger);
-    combinedData.push(...snacks);
-    combinedData.push(...beberages);
-  }
+  useEffect(() => {
+    menuTypes.forEach((type) => {
+      if (!productsByType[type.ID_Type]) {
+        fetchProductsByType(type.ID_Type);
+      }
+    });
+  }, [menuTypes]);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,9 +121,9 @@ const Menu = ({ setPurchase, purchase }) => {
     debouncedSearch(input);
   };
 
-  const search = (input) => {
+  const search = (input) => { 
     const results = combinedData.filter((item) => {
-      return item.title.toLowerCase().includes(input.toLowerCase());
+      return item.name.toLowerCase().includes(input.toLowerCase());
     });
 
     setSearchResults(results);
@@ -120,96 +145,21 @@ const Menu = ({ setPurchase, purchase }) => {
               <Heading className="menu-linesText">MENU</Heading>
 
               <ul className="menu-childBox-left-ul">
-                <ScrollLink
-                  to="peri-peri-chicken"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  GÀ RÁN - GÀ QUAY 
-                </ScrollLink>
-                <ScrollLink
-                  to="value-snackers"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                 MÌ Ý
-                </ScrollLink>
-                <ScrollLink
-                  to="chicken-rolls"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  THỨC UỐNG
-                </ScrollLink>
-                <ScrollLink
-                  to="chicken-buckets"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  TRÁNG MIỆNG
-                </ScrollLink>
-                <ScrollLink
-                  to="biryani-buckets"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  COMBO
-                </ScrollLink>
-                <ScrollLink
-                  to="box-meals"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  CƠM
-                </ScrollLink>
-                <ScrollLink
-                  to="burgers"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  BURGERS
-                </ScrollLink>
-                <ScrollLink
-                  to="snacks"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  THỨC ĂN NHẸ
-                </ScrollLink>
-                <ScrollLink
-                  to="beverages"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  BEVERAGES
-                </ScrollLink>
+                {
+                  menuTypes.map((item, index) => (
+                    <ScrollLink
+                      key={index}
+                      to={item.ID_Type}
+                      spy={true}
+                      smooth={true}
+                      offset={-110}
+                      duration={1000}
+                      className="menu-childBox-left-links"
+                    >
+                      {item.Type_name}
+                    </ScrollLink>
+                  ))
+                }
               </ul>
             </div>
           </div>
@@ -225,96 +175,21 @@ const Menu = ({ setPurchase, purchase }) => {
                 handleSearchInputChange={handleSearchInputChange}
               />
               <ul className="menu-childBox-left-ul">
-                <ScrollLink
-                  to="peri-peri-chicken"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  PERI PERI CHICKEN
-                </ScrollLink>
-                <ScrollLink
-                  to="value-snackers"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  VALUE SNACKERS
-                </ScrollLink>
-                <ScrollLink
-                  to="chicken-rolls"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  CHICKEN ROLLS
-                </ScrollLink>
-                <ScrollLink
-                  to="chicken-buckets"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  CHICKEN BUCKETS
-                </ScrollLink>
-                <ScrollLink
-                  to="biryani-buckets"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  BIRYANI BUCKETS
-                </ScrollLink>
-                <ScrollLink
-                  to="box-meals"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  BOX MEALS
-                </ScrollLink>
-                <ScrollLink
-                  to="burgers"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  BURGERS
-                </ScrollLink>
-                <ScrollLink
-                  to="snacks"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  SNACKS
-                </ScrollLink>
-                <ScrollLink
-                  to="beverages"
-                  spy={true}
-                  smooth={true}
-                  offset={-110}
-                  duration={1000}
-                  className="menu-childBox-left-links"
-                >
-                  BEVERAGES
-                </ScrollLink>
+                {
+                  menuTypes.map((item, index) => (
+                    <ScrollLink
+                      key={index}
+                      to={item.ID_Type}
+                      spy={true}
+                      smooth={true}
+                      offset={-110}
+                      duration={1000}
+                      className="menu-childBox-left-links"
+                    >
+                      {item.Type_name}
+                    </ScrollLink>
+                  ))
+                }
               </ul>
             </div>
             <div className="menu-searchSection">
@@ -323,7 +198,7 @@ const Menu = ({ setPurchase, purchase }) => {
                 <input
                   type="search"
                   className="menu-search-input"
-                  placeholder="Search our menu"
+                  placeholder="Hôm nay ăn gì..."
                   value={searchInput}
                   onChange={handleSearchInputChange}
                 />
@@ -334,7 +209,7 @@ const Menu = ({ setPurchase, purchase }) => {
                 <div id="value-snackers" className="menu-grandChild">
                   <Flex gap={20}>
                     <Heading>
-                      Searched Results : {searchResults.length}{" "}
+                      Kết quả tìm kiếm: {searchResults.length}{" "}
                     </Heading>
                     <Button
                       colorScheme="whatsapp"
@@ -343,7 +218,7 @@ const Menu = ({ setPurchase, purchase }) => {
                         setSearchState(false);
                       }}
                     >
-                      Clear Results
+                      Thoát
                     </Button>
                   </Flex>
                   <div className="menu-childCards2">
@@ -365,189 +240,36 @@ const Menu = ({ setPurchase, purchase }) => {
                 </div>
               ) : (
                 <>
-                  {/*peri-peri-chicken  */}
-                  <div
-                    id="peri-peri-chicken"
-                    className="menu-grandChild-withGrayBG"
-                  >
-                    <Heading style={{ paddingLeft: "20px" }}>
-                      PERI PERI CHICKEN
-                    </Heading>
-                    <div className="menu-childCards">
-                      <div className="menu-childCards-box">
-                        {peri?.map((card, index) => {
-                          return (
-                            <div className="menu-periperi" key={index}>
+                 {
+                    menuTypes.map((type) => (
+                      <div key={type.ID_Type} id={type.ID_Type} className="menu-grandChild">
+                        <Heading>{type.Type_name}</Heading>
+                        <div className="menu-childCards">
+                          <div className="menu-childCards-box">
+                          {productsByType[type.ID_Type] && productsByType[type.ID_Type].map((product, index) => (
+                          <div key={index} className="menu-product-item">    
+                            {type.Type_name === 'Combo' ? (
                               <Card1
-                                card={card}
+                                card={product}
                                 setPurchase={setPurchase}
                                 purchase={purchase}
                                 loading={loading}
                               />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  {/* value-snackers */}
-                  <div id="value-snackers" className="menu-grandChild">
-                    <Heading>VALUE SNACKERS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {value?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
+                            ) : (
                               <Card2
-                                card={card}
+                                card={product}
                                 setPurchase={setPurchase}
                                 purchase={purchase}
                                 loading={loading}
                               />
-                            </div>
-                          );
-                        })}
+                            )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  {/*Chiken Rolls */}
-                  <div id="chicken-rolls" className="menu-grandChild">
-                    <Heading>CHICKEN ROLLS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {chikenRolls?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  {/* Chiken Buckets */}
-                  <div id="chicken-buckets" className="menu-grandChild">
-                    <Heading>CHICKEN BUCKETS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {chikenBuckets?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  {/* Biryani Buckets */}
-                  <div id="biryani-buckets" className="menu-grandChild">
-                    <Heading>BIRYANI BUCKETS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {biryaniBuckets?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  {/* Box Meals */}
-                  <div id="box-meals" className="menu-grandChild">
-                    <Heading>BOX MEALS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {boxMeals?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  {/* Burger */}
-                  <div id="burgers" className="menu-grandChild">
-                    <Heading>BURGERS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {burger?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div id="snacks" className="menu-grandChild">
-                    <Heading>SNACKS</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {snacks?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div id="beverages" className="menu-grandChild">
-                    <Heading>BEVERAGES</Heading>
-                    <div className="menu-childCards2">
-                      <div className="menu-childCards-box2">
-                        {beberages?.map((card, index) => {
-                          return (
-                            <div className="value-snackers" key={index}>
-                              <Card2
-                                card={card}
-                                setPurchase={setPurchase}
-                                purchase={purchase}
-                                loading={loading}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
+                    ))
+                  }
                 </>
               )}
             </div>

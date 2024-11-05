@@ -9,13 +9,13 @@ const NotFound = () => {
     <div className="error-container">
       <img src={errorImg} alt="Lost Chicken" className="errorImg" />
 
-      <h1>Oops! This chicken has crossed the road and got lost!</h1>
+      <h1>Con gà bạn đang muốn tìm đã bị lạc!</h1>
       <p>
-        Looks like the page you're looking for is clucking nowhere to be found.
-        Don't worry, Colonel Sanders is just as surprised!
+        Có vẻ như trang bạn đang tìm kiếm không được tìm thấy.
+        Đừng lo, còn nhiều gà ngon đang xếp hàng đợi bạn!
       </p>
       <button className="error-goHome" onClick={() => navigate("/")}>
-        Homeward Bound! Take me back to the finger lickin' good homepage!
+        Nào theo tôi! Tôi sẽ đưa bạn đến thiên đường ẩm thực!
       </button>
     </div>
   );

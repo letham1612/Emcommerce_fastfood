@@ -17,12 +17,12 @@
 }
 
 .heroBottom-text {
-  font-family: "National 2 Condensed Bold";
+  /* font-family: "National 2 Condensed Bold"; */
   font-style: normal;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 20px;
-  letter-spacing: 0.5px;
+  /* letter-spacing: 0.5px; */
 }
 
 .startOrderBtn {
@@ -65,7 +65,7 @@
   align-items: flex-start;
   font-size: 50px;
   padding-top: 20px;
-  font-family: "National 2 Condensed Bold";
+  /* font-family: "National 2 Condensed Bold"; */
 }
 
 .categoriesContainer {
@@ -77,7 +77,7 @@
   justify-content: center;
   align-items: center;
   height: 200px;
-  font-family: "National 2 Condensed Bold";
+  /* font-family: "National 2 Condensed Bold"; */
   font-size: 30px;
   padding-left: 130px;
 }

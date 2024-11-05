@@ -7,6 +7,7 @@ import axios from "axios";
 const Home = () => {
   const [cardData, setCardData] = useState([]);
   const [loading, setLoading] = useState(false);
+  
   const fetchData = () => {
     setLoading(true);
     axios

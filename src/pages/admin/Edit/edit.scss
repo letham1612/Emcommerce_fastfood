@@ -1,0 +1,124 @@
+.add_new {
+  display: grid;
+  grid-template-columns: 17% 83%;
+  justify-content: center;
+
+  .new_page {
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    .new_page_main {
+      padding: 20px 25px;
+      .new_page_content {
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+        padding: 20px;
+        border-radius: 4px;
+
+        .image {
+          flex: 4;
+
+          .add_new_user {
+            color: rgba(128, 128, 128, 0.603);
+            font-size: 25px;
+            margin-right: auto;
+          }
+
+          img {
+            height: 'auto';
+            width: 300px;
+            background-color: rgba(128, 128, 128, 0.288);
+            object-fit: cover;
+            margin: 15px auto; 
+          }
+        }
+
+        .form {
+          flex: 8;
+          display: grid;
+          justify-content: space-around;
+          position: relative;
+          grid-template-columns: 1fr 1fr; // Tạo 2 cột
+          gap: 20px;
+
+          // Thêm nút tải hình vào đây
+          .form_inp {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            label {
+              display: flex;
+              align-items: center;
+              margin-bottom: 5px; // Khoảng cách giữa nhãn và input
+            }
+            .file_icon {
+              cursor: pointer;
+              margin-left: 10px;
+              font-size: 30px;
+            }
+          }
+
+          .submit_btn {
+            margin: 15px auto;  // Thay đổi margin để căn giữa
+            display: block;
+            width: 200px;
+            padding: 9px 15px;
+            border: none;
+            background: none;
+            background-color: #7451f8;
+            border: 1px solid #7451f8;
+            color: white;
+            font-size: 17px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: white;
+              color: #7451f8;
+              border: 1px solid #7451f8;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .add_new {
+    display: grid;
+    grid-template-columns: 100%;
+    justify-content: center;
+
+    .home_sidebar {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .add_new {
+    .new_page {
+      .new_page_main {
+        .new_page_content {
+          display: grid;
+          grid-template-columns: 95%;
+          justify-content: center;
+          gap: 40px;
+        }
+      }
+    }
+  }
+}

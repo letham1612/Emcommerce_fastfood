@@ -3,9 +3,10 @@ import "./Style.css";
 import { Flex } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import cardPointN from "../../../../assets/NonVeg.svg";
-import cardPointV from "../../../../assets/Veg.svg";
+import { IMAGE_URL } from '../../../../config/ApiConfig';
 import imgPlaceholder from "../../../../assets/placeholder.webp";
+import logo from '../../../../assets/logo.png';
+
 
 const SkeletonCard = () => (
   <div className="menu-card2-parent child2-skeleton">
@@ -77,35 +78,26 @@ const Card2 = ({ card, setPurchase, purchase, loading }) => {
         <div className="menu-card2-parent">
           <div className="menu-card2-child1">
             <img
-              src={card.url}
-              alt={card.title}
+              src={IMAGE_URL+card.image || logo}
+              alt={card.name}
               className="menu-card2-child1-img"
             />
             <div className="menu-card2-child1-desc">
-              <div className="menu-card2-child1-title"> {card.title} </div>
-              <Flex gap={4} pb={2}>
-                <img
-                  src={card.varity === "Non veg" ? cardPointN : cardPointV}
-                  alt={card.varity}
-                  className="menu-card2-child1-point"
-                />
-                <p>{card.varity}</p>
-                {card.serving ? <li>{card.serving}</li> : ""}
-              </Flex>
+              <div className="menu-card2-child1-title"> {card.name} </div>
               <Flex gap={4} pb={2}>
                 {card.oldPrice ? (
                   <>
                     <h4 className="menu-card2-child1-oldPrice">
-                      {card.oldPrice}
+                      {card.price}
                     </h4>
                     <h4 className="menu-card2-child1-currentPrice">
-                      ₹ {card.price}
+                      {card.newprice} VNĐ
                     </h4>
                     `
                   </>
                 ) : (
                   <h4 className="menu-card2-child1-currentPrice">
-                    ₹ {card.price}
+                      {card.price.toLocaleString('vi-VN')} VNĐ
                   </h4>
                 )}
               </Flex>
@@ -117,12 +109,7 @@ const Card2 = ({ card, setPurchase, purchase, loading }) => {
               className="offer-card-addToCart"
               onClick={() => handleClick({ card })}
             >
-              Add to Cart
-              <img
-                className="offee-cart-buttonImg"
-                src="https://online.kfc.co.in/static/media/Icon_Add_to_Cart.58b87a9b.svg"
-                alt=""
-              />
+              Thêm vào giỏ hàng
             </button>
           </div>
         </div>
