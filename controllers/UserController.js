@@ -50,7 +50,6 @@ const login = async (req, res) => {
         const token = jwt.sign({ id: user._id, username: user.username, isadmin: user.isadmin }, secretKey, { expiresIn: '1h' });
         const refreshToken = jwt.sign({ id: user._id, username: user.username, isadmin: user.isadmin }, refreshSecretKey, { expiresIn: '7d' });
   
-        // user.refreshToken = refreshToken; 
         await user.save();
         const responseStatus = user.isadmin ? 200 : 202;
         res.status(responseStatus).json({
@@ -65,29 +64,25 @@ const login = async (req, res) => {
   const refreshAccessToken = async (req, res) => {
     const { refreshToken } = req.body;
     const refreshSecretKey = process.env.JWT_REFRESH_SECRET || 'default_refresh_secret_key';
-  
+
     if (!refreshToken) {
         return res.status(401).json({ message: 'Refresh token is required' });
     }
-  
+
     try {
-        // Kiểm tra refreshToken hợp lệ và lấy user ID từ đó
+        // Giải mã refreshToken và lấy user ID từ đó
         const decoded = jwt.verify(refreshToken, refreshSecretKey);
-        const user = await User.findById(decoded.id);
-  
-        if (!user || user.refreshToken !== refreshToken) {
-            return res.status(403).json({ message: 'Invalid refresh token' });
-        }
-  
-        // Tạo token mới
+        
+        // Tạo một accessToken mới
         const secretKey = process.env.JWT_SECRET || 'default_secret_key';
-        const newToken = jwt.sign({ id: user._id, username: user.username, isadmin: user.isadmin }, secretKey, { expiresIn: '1h' });
-  
+        const newToken = jwt.sign({ id: decoded.id, username: decoded.username, isadmin: decoded.isadmin }, secretKey, { expiresIn: '1h' });
+
         res.json({ token: newToken });
     } catch (err) {
-        res.status(403).json({ message: 'Invalid refresh token', error: err.message });
+        res.status(403).json({ message: 'Invalid or expired refresh token', error: err.message });
     }
-  };
+};
+
   
 const changePassword = async (req, res) => {
   const { email, oldPassword, newPassword, resNewPassword } = req.body;
