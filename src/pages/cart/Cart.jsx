@@ -4,12 +4,17 @@ import linesLogo from "../../assets/mobileLogo.png";
 import { useNavigate } from "react-router-dom";
 import { Flex, Heading } from "@chakra-ui/react";
 import CartCards from "../../components/cartCards/CartCards";
+import logo from "../../assets/logo.png";
+import { CARTS_API, API_BASE_URL } from '../../config/ApiConfig';
+import { toast } from "react-toastify";
+
+
 
 const Cart = ({ purchase, setPurchase }) => {
   const [cartData, setCartData] = useState([]);
 
   const initialHope = JSON.parse(localStorage.getItem("hope")) || false;
-  console.log(initialHope);
+  // console.log(initialHope);
   const [hope, setHope] = useState(initialHope);
 
   const handleHope = () => {
@@ -28,8 +33,82 @@ const Cart = ({ purchase, setPurchase }) => {
     setPurchase(updatedPurchase);
   };
 
+  // const payment = async (id) => {
+  //   try {
+  //     const response = await fetch(API_BASE_URL + "/payment", {
+  //       method: 'POST',
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         // "Authorization": `Bearer ${token}` // Add token to the Authorization header
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       if (response.status === 401) {
+  //           // Show login required message
+  //           toast.error("Vui lòng đăng nhập để thực hiện thao tác!", {
+  //               position: "top-right",
+  //               autoClose: 2000,
+  //               hideProgressBar: false,
+  //               closeOnClick: true,
+  //               pauseOnHover: true,
+  //               draggable: true,
+  //               theme: "colored",
+  //           });
+  //           throw new Error("Thêm sản phẩm thất bại!");
+  //       }
+  //       throw new Error("Đã xảy ra lỗi!");
+  //   }
+
+  //     const data = await response.json();
+  //     // console.log(data)
+  //     setCartData(data);
+  //   } catch (error) {
+  //     console.error('Lỗi khi lấy dữ liệu:', error);
+  //   }
+  // };
+  // }
+
+  const fetchDataCarts = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch(CARTS_API, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Add token to the Authorization header
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+            // Show login required message
+            toast.error("Vui lòng đăng nhập để thực hiện thao tác!", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored",
+            });
+            throw new Error("Thêm sản phẩm thất bại!");
+        }
+        throw new Error("Đã xảy ra lỗi!");
+    }
+
+      const data = await response.json();
+      // console.log(data)
+      setCartData(data);
+    } catch (error) {
+      console.error('Lỗi khi lấy dữ liệu:', error);
+    }
+  };
+
   const navigate = useNavigate();
-  const gst = parseFloat((purchase.subTotal * 0.05) / 1000).toFixed(2);
+  const gst = ((cartData.reduce((total, item) => total + (item.price * item.quantity), 0)) * 0.05);
+  // const gst = parseFloat((purchase.subTotal * 0.05) / 1000).toFixed(2);
 
   const fetchData = () => {
     const localCart = JSON.parse(localStorage.getItem("cartData")) || [];
@@ -37,7 +116,8 @@ const Cart = ({ purchase, setPurchase }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    fetchDataCarts();
   }, []);
 
   return (
@@ -46,7 +126,7 @@ const Cart = ({ purchase, setPurchase }) => {
       ĐẶT MÓN DỄ DÀNG - TẬN HƯỞNG MỌI LÚC, MỌI NƠI ! 
         <button className="cart-headerSection-button">Đặt ngay</button>
       </div>
-      {purchase.quantity < 1 ? (
+      {cartData.length < 1 ? (
         <div className="cart-cardsSection">
           <div className="cart-headingSection">
             <img src={linesLogo} alt="logo" className="cart-3lingLogo" />
@@ -55,7 +135,7 @@ const Cart = ({ purchase, setPurchase }) => {
 
           <div className="cart-data-parent-Empty-box">
             <div className="cart-data-parent-Empty-box-left">
-              <p>YOUR CART IS EMPTY. LET'S START AN ORDER!</p>
+              <p>GIỎ HÀNG CỦA BẠN TRỐNG. HÃY BẮT ĐẦU ĐẶT HÀNG!</p>
               <button
                 className="cart-empty-Start-button"
                 onClick={() => navigate("/menu")}
@@ -65,7 +145,7 @@ const Cart = ({ purchase, setPurchase }) => {
             </div>
             <div className="cart-data-parent-Empty-box-right">
               <img
-                src="https://online.kfc.co.in/static/media/empty_cart.32f17a45.png"
+                src={logo}
                 alt="empty cart img"
                 className="EmptyCartImage"
               />
@@ -96,9 +176,13 @@ const Cart = ({ purchase, setPurchase }) => {
               </div>
               <div className="cart-storedData-right">
                 <div className="cart-amoutBox">
-                  <Heading>
+                  {/* <Heading>
                     {purchase.quantity}{" "}
                     {purchase.quantity > 1 ? " MÓN" : " ITEM"}
+                  </Heading> */}
+                  <Heading>
+                    {cartData.reduce((total, item) => total + item.quantity, 0)}{" "}
+                    {cartData.reduce((total, item) => total + item.quantity, 0) > 1 ? " MÓN" : " ITEM"}
                   </Heading>
                   <div className="cart-amountBox-offerBox">
                     <div className="cart-amountBox-offerBox-circle1"></div>
@@ -109,22 +193,23 @@ const Cart = ({ purchase, setPurchase }) => {
                       className="cart-amountBox-button"
                       onClick={() => navigate("/offers")}
                     >
-                      View All
+                      Xem
                     </button>
                     <div className="cart-amountBox-offerBox-circle2"></div>
                   </div>
                   <div className="cart-amountBox-total">
                   <p>Tạm tính</p>
-                  <p>{(purchase.subTotal / 1000).toFixed(2)} đ</p>
+                  {/* <p>{parseInt(purchase.subTotal, 10).toLocaleString('vi-VN')} VNĐ</p> */}
+                  <p>{cartData.reduce((total, item) => total + (item.price * item.quantity), 0).toLocaleString('vi-VN')} VNĐ</p>
                   </div>
                   <div className="cart-amountBox-gst">
-                  <p>Thuế GST</p>
-                  <p>{gst} đ</p>
+                  <p>Phí giao hàng</p>
+                  <p>{parseInt(gst, 10).toLocaleString('vi-VN')} VNĐ</p>
                   </div>
                   {hope ? (
                     <div className="cart-amountBox-addHope">
                       <p>Add Hope</p>
-                      <p>1.000 đ</p>
+                      <p>1.000 VNĐ</p>
                     </div>
                   ) : (
                     ""
@@ -143,7 +228,7 @@ const Cart = ({ purchase, setPurchase }) => {
                       <p> Mục tiêu của chúng tôi là cung cấp bữa ăn cho 100 ngàn người vào năm 2025.</p>
                     </Flex>
                     <img
-                      src="https://causemarketing.com/wp-content/uploads/2016/12/add-hope-logo.png"
+                      src={logo}
                       alt="hope img"
                       className="addHopeImage"
                     />
@@ -153,7 +238,8 @@ const Cart = ({ purchase, setPurchase }) => {
                     onClick={() => navigate("/checkout")}
                   >
                     <p>Thanh toán  </p> 
-                    <p>  {(purchase.totalAmount/1000).toFixed(2) } đ </p>
+                    <p>{parseInt(cartData.reduce((total, item) => total + (item.price * item.quantity), 0) + gst).toLocaleString('vi-VN')} VNĐ</p>
+                    {/* <p>{parseInt(purchase.totalAmount).toLocaleString('vi-VN')} VNĐ</p> */}
                   </button>
                 </div>
               </div>

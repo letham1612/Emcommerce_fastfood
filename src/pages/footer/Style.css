@@ -1,19 +1,22 @@
 .footer-parentContainer {
     display: flex;
     flex-direction: column;
-    background-color: #202124;
+    background-color: #9c2121;
+    z-index: 9999;
+    position: relative;
 }
 
 .MainFooterContainer {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-bottom: 130px;
-    margin-top: 100px;
+    padding-bottom: 40px;
+    margin-top: 10px;
 }
 
 .footerLogo {
     padding: 20px 0px 20px 0px;
+    width: 120px;
 }
 
 .footerSection {
@@ -108,9 +111,7 @@
         width: 100%;
     }
 
-    .footerBottomSection {
-        justify-content: center;
-    }
+    
 }
 
 @media only screen and (max-width: 570px) {
@@ -130,5 +131,6 @@
 
     .footerBottomSection {
         flex-direction: column;
+        
     }
 }

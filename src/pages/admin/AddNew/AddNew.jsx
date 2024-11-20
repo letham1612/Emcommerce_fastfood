@@ -181,7 +181,17 @@ function AddNew({ titlee, type }) {
                                                 name="file"
                                                 id="file"
                                                 style={{ display: 'none' }}
-                                                onChange={(e) => setFile(e.target.files[0])}
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    
+                                                    if (file && file.type.startsWith("image/")) {
+                                                        setFile(file); // Nếu là tệp hình ảnh, đặt nó vào state
+                                                    } else {
+                                                        alert("Vui lòng chọn tệp hình ảnh!"); // Thông báo lỗi nếu không phải ảnh
+                                                        e.target.value = null; // Xóa tệp đã chọn
+                                                    }
+                                                }}
                                             />
                                         </div>
                                     </div>):

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import "./Style.css";
-import logo from "../../assets/headerLogo.jpg";
-// import logo from "../../assets/kfcLogo.svg";
+import locationImg from "../../assets/location.svg";
+import logo from "../../assets/logo.png";
 import accountIcon from "../../assets/Account_Icon.svg";
+import cartBucketIcon from "../../assets/bucket_cart_icon.svg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
@@ -11,6 +12,22 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ setBurger, burger, purchase }) => {
   const navigate = useNavigate();
+
+  const [className, setClassName] = useState("");
+  const headerFunction = () => {
+    if (window.location.pathname !== `/`) {
+      setClassName("hidden");
+    } else {
+      setClassName("headerSection");
+    }
+  };
+  useEffect(() => {
+    headerFunction();
+  });
+  const handleLinkClick = (path) => {
+    navigate(path);
+  };
+
   return (
     <div className='NavMainContainer'>
       <div className='nav'>
@@ -54,7 +71,7 @@ const Navbar = ({ setBurger, burger, purchase }) => {
               className='headerIconButtons'
               onClick={() => navigate("/cart")}
             >
-              <span className='headerPrice'> {parseInt(purchase.totalAmount, 10).toLocaleString('vi-VN')} VNĐ</span>
+              <span className='headerPrice'>{parseInt(purchase.subTotal, 10).toLocaleString('vi-VN')} VNĐ</span>
               <div className='cartIcon'>
                 <div className='cartIconCount'>{purchase.quantity}</div>
               </div>

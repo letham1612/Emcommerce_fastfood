@@ -5,9 +5,17 @@ import lineImg from "../../assets/mobileLogo.png";
 // import axios from "axios";
 import Categories from "../../components/categoriesCard/Categories";
 import { useNavigate } from "react-router-dom";
-import { TYPES_API, PRODUCTSBYTYPE_API } from '../../config/ApiConfig';
+import { TYPES_API, PRODUCTSBYTYPE_API, IMAGE_URL } from '../../config/ApiConfig';
 import logo from '../../assets/logo.png';
 
+function checkImageExists(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(true); // Hình ảnh tồn tại
+    img.onerror = () => resolve(false); // Hình ảnh không tồn tại
+  });
+}
 
 const Hero = () => {
   const [data, setData] = useState([]);
@@ -45,10 +53,14 @@ const Hero = () => {
           'Content-Type': 'application/json',
         },
       });
-      if (!response.ok) throw new Error('Lỗi khi gọi API sản phẩm theo loại');
+      if (!response.ok) throw new Error('Không tìm thấy sản phẩm theo loại!');
       const data = await response.json();
       
-      setProductsByType((prev) => ({ ...prev, [ID_Type]: data }));
+      data[0].image = IMAGE_URL + data[0].image
+      const exists = await checkImageExists(data[0].image);
+      data[0].image = exists ? data[0].image : logo;
+
+      setProductsByType((prev) => ({ ...prev, [ID_Type]: data[0].image }));
     } catch (error) {
       console.error(`Lỗi khi lấy dữ liệu sản phẩm cho loại ${ID_Type}:`, error);
     }

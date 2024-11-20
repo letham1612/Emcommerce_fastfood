@@ -18,6 +18,14 @@
 
 .menuText {
   text-align: center;
+  border: 2px solid red; /* Khung màu đỏ */
+  border-radius: 8px; /* Bo tròn các góc */
+  padding: 10px; /* Khoảng cách bên trong khung */
+  margin: 0 10px; /* Khoảng cách bên ngoài ở trái và phải */
+  background-color: red; /* Màu nền đỏ */
+  color: white; /* Màu chữ trắng để dễ đọc trên nền đỏ */
+  z-index: 2;
+  position: relative;
 }
 
 .categories-skeleton {

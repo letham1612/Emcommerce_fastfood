@@ -26,7 +26,8 @@ const PayModal = ({ setPayType, payType, userData }) => {
       alert("Please Enter Correct Details");
       return;
     }
-    onOpen();
+    // onOpen();
+    console.log("conchokhiem")
   };
 
   const handleSubmit = () => {

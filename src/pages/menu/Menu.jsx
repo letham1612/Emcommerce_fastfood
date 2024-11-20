@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "./Style.css";
 import linesLogo from "../../assets/mobileLogo.png";
-
+import logo from '../../assets/logo.png';
 import { BsSearch } from "react-icons/bs";
 import { Link as ScrollLink } from "react-scroll";
 import Card1 from "./menuCards/card1/Card1";
 import Card2 from "./menuCards/card2/Card2";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import MobSearch from "../../components/mobSearch/MobSearch";
-import { TYPES_API, PRODUCTSBYTYPE_API } from '../../config/ApiConfig';
+import { TYPES_API, PRODUCTSBYTYPE_API, IMAGE_URL } from '../../config/ApiConfig';
 
+
+function checkImageExists(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(true); // Hình ảnh tồn tại
+    img.onerror = () => resolve(false); // Hình ảnh không tồn tại
+  });
+}
 
 const Menu = ({ setPurchase, purchase }) => {
   const [combinedData, setCombinedData] = useState([]);
@@ -24,6 +33,16 @@ const Menu = ({ setPurchase, purchase }) => {
 
   // Mobile Menu Search
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const verifyImages = async (data, ID_Type) => {
+    const updatedData = await Promise.all(
+      data.map(async (item) => {
+        const exists = await checkImageExists(item.image);
+        return { ...item, image: exists ? item.image : logo }; // Sử dụng logo nếu hình ảnh không tồn tại
+      })
+    );
+    setProductsByType((prev) => ({ ...prev, [ID_Type]: updatedData }));
+  };
 
   const fetchDataTypes = async () => {
     try {
@@ -55,8 +74,14 @@ const Menu = ({ setPurchase, purchase }) => {
       data.forEach(product => {
           combinedData.push(product);
       });
+
+      const updatedData = await data.map(item => ({
+        ...item,
+        image: IMAGE_URL + item.image,
+      }));  
       
-      setProductsByType((prev) => ({ ...prev, [ID_Type]: data }));
+      verifyImages(updatedData, ID_Type)
+      // setProductsByType((prev) => ({ ...prev, [ID_Type]: data }));
     } catch (error) {
       console.error(`Lỗi khi lấy dữ liệu sản phẩm cho loại ${ID_Type}:`, error);
     }
@@ -246,7 +271,8 @@ const Menu = ({ setPurchase, purchase }) => {
                         <Heading>{type.Type_name}</Heading>
                         <div className="menu-childCards">
                           <div className="menu-childCards-box">
-                          {productsByType[type.ID_Type] && productsByType[type.ID_Type].map((product, index) => (
+                          {productsByType[type.ID_Type] && productsByType[type.ID_Type].map((product, index) => {
+                          return  (
                           <div key={index} className="menu-product-item">    
                             {type.Type_name === 'Combo' ? (
                               <Card1
@@ -264,7 +290,7 @@ const Menu = ({ setPurchase, purchase }) => {
                               />
                             )}
                               </div>
-                            ))}
+                            )})}
                           </div>
                         </div>
                       </div>

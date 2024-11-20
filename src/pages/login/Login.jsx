@@ -57,8 +57,14 @@ const Login = () => {
             draggable: true,
             theme: "colored",
         });
-        // navigate("/");
-        navigate("/admin");
+        console.log(response.status)
+        if (response.status === 202){
+          navigate("/");
+        }
+        else{
+          navigate("/admin");
+        }
+        
 
         setTimeout(() => {
             // Lưu token người dùng vào localStorage
@@ -122,7 +128,7 @@ const Login = () => {
               <FontAwesomeIcon icon={faGoogle} /> Đăng nhập bằng Google
             </button>
             <p className="signup-text">
-              Chưa có tài khoản? <a href="#">Đăng ký</a>
+              Chưa có tài khoản? <a href="/register">Đăng ký</a>
             </p>
           </form>
         </div>

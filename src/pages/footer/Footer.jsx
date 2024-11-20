@@ -31,13 +31,13 @@ const Footer = () => {
             </ul>
             <ul>
               <li>
-                <a href='/'>KFC India</a>
+                <a href='/'>Viet Nam</a>
               </li>
               <li>
-                <a href='/'>About KFC</a>
+                <a href='/'>About me</a>
               </li>
               <li>
-                <a href='/'>KFC Care</a>
+                <a href='/'> Care</a>
               </li>
               <li>
                 <a href='/'>Careers</a>
@@ -48,7 +48,7 @@ const Footer = () => {
             </ul>
             <ul>
               <li>
-                <a href='/'>KFC Food</a>
+                <a href='/'>Food</a>
               </li>
               <li>
                 <a href='/'>Menu</a>
@@ -74,7 +74,7 @@ const Footer = () => {
                 <a href='/'>Contact Us</a>
               </li>
               <li>
-                <a href='/'>KFC Feedback</a>
+                <a href='/'>Feedback</a>
               </li>
               <li>
                 <a href='/'>Privacy Policy</a>
@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
           <div className='findStore'>
             <img src={locationImg} alt='locationImg' />
-            <a href='/'>Find a KFC</a>
+            <a href='/'>Find a location</a>
           </div>
           <div className='footerSocialButtons'>
             <SocialButtons />
@@ -91,8 +91,8 @@ const Footer = () => {
         </div>
       </div>
       <div className='footerBottomSection'>
-        <span>Copyright © KFC Corporation 2023</span>{" "}
-        <span>All Rights Reserved</span>
+        <span>Copyright © 2024 </span>{" "}
+        <span> Nhóm 6 XÂY DỰNG ỨNG DỤNG THƯƠNG MẠI ĐIỆN TỬ </span>
       </div>
     </div>
   );

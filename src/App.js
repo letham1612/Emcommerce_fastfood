@@ -22,10 +22,17 @@ function App() {
   const [purchase, setPurchase] = useState(initialPurchase);
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
-
+  // setPurchase(initialPurchase)
   localStorage.setItem("userPurchase", JSON.stringify(purchase));
 
-  // const totalAmount = 565.71;
+  // localStorage.clear()
+  // for (let key in localStorage) {
+  //   if (key !== "token") {
+  //     localStorage.removeItem(key);
+  //   }
+  // }
+
+  // const totalAmount = 0;
   // const cartIconCount = 2;
   const toggleDrawer = () => {
     setBurger(!burger);

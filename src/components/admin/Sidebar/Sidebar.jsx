@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 import './Sidebar.scss';
-import logo from "../../../assets/headerLogo.jpg";
+import logo from "../../../assets/logo.png";
 
 function Sidebar() {
     // color state management using react context

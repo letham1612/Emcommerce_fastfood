@@ -3,7 +3,6 @@ import "./Style.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import imgPlaceholder from "../../../../assets/placeholder.webp";
-import { IMAGE_URL } from '../../../../config/ApiConfig';
 import logo from '../../../../assets/logo.png';
 
 
@@ -64,7 +63,7 @@ const Card1 = ({ card, setPurchase, purchase, loading }) => {
         <SkeletonCard />
       ) : (
         <div className="menu-childCardBody">
-          <img src={IMAGE_URL+card.image || logo} alt={card.name} className="offer-cardImg" />
+          <img src={card.image || logo} alt={card.name} className="offer-cardImg" />
           <p className="menu-cardTitle">{card.name}</p>
           <div className="offer-cardCategory">
             <img

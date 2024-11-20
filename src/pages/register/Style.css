@@ -1,0 +1,136 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    padding: 20px;
+}
+
+.register-content {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-left {
+    width: 59%; 
+    background-color: #dc2626;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.register-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.register-right {
+    width: 100%; 
+    padding: 40px;
+    
+}
+
+.register-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: px;
+    color: #333;
+}
+
+.form-container {
+    padding: 10px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.password-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    color: #000;
+    font-size: 16px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #db4437;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #b93f34;
+}
+
+.signin {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.signin .signin-link {
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.signin .signin-link:hover {
+    text-decoration: underline;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .register-content {
+        flex-direction: column;
+    }
+    .register-left, .register-right {
+        width: 100%;
+    }
+}

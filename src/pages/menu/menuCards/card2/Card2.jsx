@@ -3,9 +3,9 @@ import "./Style.css";
 import { Flex } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { IMAGE_URL } from '../../../../config/ApiConfig';
 import imgPlaceholder from "../../../../assets/placeholder.webp";
 import logo from '../../../../assets/logo.png';
+import { CARTS_API } from '../../../../config/ApiConfig';
 
 
 const SkeletonCard = () => (
@@ -36,38 +36,105 @@ const SkeletonCard = () => (
 );
 
 const Card2 = ({ card, setPurchase, purchase, loading }) => {
-  const handleClick = ({ card }) => {
-    const localCart = JSON.parse(localStorage.getItem("cartData")) || [];
-    const index = localCart.findIndex((item) => item.id === card.id);
+  const handleClick = async ({ card }) => {
+    // event.preventDefault();
 
-    if (index >= 0) {
-      localCart[index].quantity += 1;
-    } else {
-      card.quantity = 1;
-      localCart.push(card);
+    try {
+      const token = localStorage.getItem('token');
+  
+      const response = await fetch(CARTS_API, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}` 
+          },
+          body: JSON.stringify({
+              product_id: card.ID_Product,
+              quantity: 1,
+              price: card.price
+          })
+      });
+  
+      if (!response.ok) {
+          if (response.status === 401) {
+              // Show login required message
+              toast.error("Vui lòng đăng nhập để thực hiện thao tác!", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "colored",
+              });
+              throw new Error("Thêm sản phẩm thất bại!");
+          }
+          throw new Error("Đã xảy ra lỗi!");
+      }
+  
+      const data = await response.json();
+ 
+        // // Thông báo đăng nhập thành công
+        // toast.success("Đăng nhập thành công.", {
+        //     position: "top-right",
+        //     autoClose: 2000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     theme: "colored",
+        // });
+        // console.log(response.status)
+        // if (response.status === 202){
+        //   navigate("/");
+        // }
+        // else{
+        //   navigate("/admin");
+        // }
+        
+
+        // setTimeout(() => {
+        //     // Lưu token người dùng vào localStorage
+        //     localStorage.setItem('token', data["token"]);
+        // }, 2000);
+    } catch (error) {
+        console.error("Lỗi khi thêm sản phẩm :", error);
     }
-    localStorage.setItem("cartData", JSON.stringify(localCart));
+    /////
+    // const localCart = JSON.parse(localStorage.getItem("cartData")) || [];
+    // const index = localCart.findIndex((item) => item.id === card.id);
 
-    const updatedPurchase = { ...purchase };
-    updatedPurchase.quantity += 1;
-    updatedPurchase.subTotal = parseFloat(
-      parseFloat(updatedPurchase.subTotal) + parseFloat(card.price)
-    ).toFixed(2);
-    updatedPurchase.totalAmount = parseFloat(
-      updatedPurchase.subTotal * 1.05
-    ).toFixed(2);
-    setPurchase(updatedPurchase);
+    // console.log(card.ID_Product)
+    // console.log(card.price)
 
-    toast.success("🍗 Thêm vào giỏ hàng thành công!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    // if (index >= 0) {
+    //   localCart[index].quantity += 1;
+    // } else {
+    //   card.quantity = 1;
+    //   localCart.push(card);
+    // }
+    // localStorage.setItem("cartData", JSON.stringify(localCart));
+
+    // const updatedPurchase = { ...purchase };
+    // updatedPurchase.quantity += 1;
+    // updatedPurchase.subTotal = parseFloat(
+    //   parseFloat(updatedPurchase.subTotal) + parseFloat(card.price)
+    // ).toFixed(2);
+    // updatedPurchase.totalAmount = parseFloat(
+    //   updatedPurchase.subTotal * 1.05
+    // ).toFixed(2);
+    // setPurchase(updatedPurchase);
+
+    // toast.success("🍗 Thêm vào giỏ hàng thành công!", {
+    //   position: "top-center",
+    //   autoClose: 2000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "dark",
+    // });
   };
 
   return (
@@ -78,7 +145,7 @@ const Card2 = ({ card, setPurchase, purchase, loading }) => {
         <div className="menu-card2-parent">
           <div className="menu-card2-child1">
             <img
-              src={IMAGE_URL+card.image || logo}
+              src={card.image || logo}
               alt={card.name}
               className="menu-card2-child1-img"
             />

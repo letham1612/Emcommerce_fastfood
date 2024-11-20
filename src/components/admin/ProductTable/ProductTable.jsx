@@ -51,7 +51,7 @@ const ProductTable = () => {
         image: IMAGE_URL + item.image,
       }));
 
-      setProductData(updatedData);
+      // setProductData(updatedData);
       // Gọi verifyImages sau khi productData đã được cập nhật
       verifyImages(updatedData);
     } catch (error) {

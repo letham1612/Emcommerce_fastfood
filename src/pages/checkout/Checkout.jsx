@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "./Style.css";
 import linesLogo from "../../assets/mobileLogo.png";
 import { useNavigate } from "react-router-dom";
-import PayModal from "../../components/payModal/PayModal";
+// import PayModal from "../../components/payModal/PayModal";
 import { Button, Heading, Select } from "@chakra-ui/react";
-import Payment from "../payment/Payment";
+// import Payment from "../payment/Payment";
 
 const initialUserData = {
   name: "",
@@ -116,11 +116,11 @@ const Checkout = ({ purchase, setPurchase }) => {
                     required
                   />
                 </form>
-                <PayModal
+                {/* <PayModal
                   setPayType={setPayType}
                   payType={payType}
                   userData={userData}
-                />
+                /> */}
                 {payType === "Card" ? (
                   <div className="checkout-payment-gateway-card">
                     <Heading>Card Details</Heading>
@@ -300,11 +300,11 @@ const Checkout = ({ purchase, setPurchase }) => {
                 >
                   <p>Continue to Payment </p> <p> ₹ {purchase.totalAmount}</p>
                 </button>
-                <Payment
+                {/* <Payment
                   isOpen={isPaymentModalOpen}
                   onClose={closePaymentModal}
                   trigger={trigger}
-                />
+                /> */}
               </div>
             </div>
           </div>
