@@ -1,4 +1,3 @@
-// app.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const connectDB = require("./config/database");
@@ -8,9 +7,11 @@ const userRoutes = require("./routes/users");
 const orderDetailRoutes = require("./routes/OrderDetailRoute");
 const typeRoutes = require("./routes/Types.route");
 const cartRouutes = require("./routes/CartRoute")
+const paymentRoutes = require("./routes/payment.route");
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
+const axios = require('axios')
 require("dotenv").config();
 
 const app = express();
@@ -31,6 +32,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/orderdetails", orderDetailRoutes);
 app.use("/api/types", typeRoutes);
 app.use("/api/carts", cartRouutes);
+app.use("/api/payments", paymentRoutes);
+
+
 
 // Cấu hình multer để tùy chỉnh đường dẫn lưu trữ
 const storage = multer.diskStorage({
