@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Style.css";
-import linesLogo from "../../assets/mobileLogo.png";
 import { useNavigate } from "react-router-dom";
 import { Flex, Heading } from "@chakra-ui/react";
 import CartCards from "../../components/cartCards/CartCards";
@@ -129,7 +128,6 @@ const Cart = ({ purchase, setPurchase }) => {
       {cartData.length < 1 ? (
         <div className="cart-cardsSection">
           <div className="cart-headingSection">
-            <img src={linesLogo} alt="logo" className="cart-3lingLogo" />
             GIỎ HÀNG
           </div>
 
@@ -156,7 +154,6 @@ const Cart = ({ purchase, setPurchase }) => {
         <div className="cart-parentContianer">
           <div className="cart-cardsSection2">
             <div className="cart-headingSection2">
-              <img src={linesLogo} alt="logo" className="cart-3lingLogo" />
               GIỎ HÀNG
             </div>
             <div className="cart-storedData">

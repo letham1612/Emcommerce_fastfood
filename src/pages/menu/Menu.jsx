@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Style.css";
-import linesLogo from "../../assets/mobileLogo.png";
 import logo from '../../assets/logo.png';
 import { BsSearch } from "react-icons/bs";
 import { Link as ScrollLink } from "react-scroll";
@@ -166,7 +165,6 @@ const Menu = ({ setPurchase, purchase }) => {
         <div className="menu-childBox">
           <div className="menu-childBox-left-wrapper">
             <div className={rightNavClass}>
-              <img src={linesLogo} alt="" className="menu-linesLogo" />
               <Heading className="menu-linesText">MENU</Heading>
 
               <ul className="menu-childBox-left-ul">
