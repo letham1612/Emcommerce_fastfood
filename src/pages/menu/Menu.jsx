@@ -71,15 +71,16 @@ const Menu = ({ setPurchase, purchase }) => {
       if (!response.ok) throw new Error('Lỗi khi gọi API sản phẩm theo loại');
       const data = await response.json();
       
-      data.forEach(product => {
-          combinedData.push(product);
-      });
-
+      
       const updatedData = await data.map(item => ({
         ...item,
         image: IMAGE_URL + item.image,
       }));  
       
+      updatedData.forEach(product => {
+          combinedData.push(product);
+      });
+
       verifyImages(updatedData, ID_Type)
       // setProductsByType((prev) => ({ ...prev, [ID_Type]: data }));
     } catch (error) {
