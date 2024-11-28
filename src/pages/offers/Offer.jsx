@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Style.css";
 import axios from "axios";
-import linesLogo from "../../assets/mobileLogo.png";
 
 import { useNavigate } from "react-router-dom";
 import { FcHome } from "react-icons/fc";
@@ -28,7 +27,6 @@ const Offer = () => {
       <div className="offer-bannerSection">DEALS & OFFERS</div>
       <div className="offer-cardsSection">
         <div className="offer-headingSection">
-          <img src={linesLogo} alt="logo" className="offer-3lingLogo" />
          KHUYẾN MÃI DÀNH CHO BẠN
         </div>
 

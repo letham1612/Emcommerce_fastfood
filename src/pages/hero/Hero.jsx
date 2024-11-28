@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Style.css";
 import Carousel from "../../components/carousel/Carousel";
-import lineImg from "../../assets/mobileLogo.png";
 // import axios from "axios";
 import Categories from "../../components/categoriesCard/Categories";
 import { useNavigate } from "react-router-dom";
@@ -89,7 +88,6 @@ const Hero = () => {
       </div>
       <Carousel />
       <div className="welcomeContainer">
-        <img src={lineImg} alt="line Img" className="lineImg" />
         <div className="welcomeGreeting">Chào mừng quý khách ...!</div>
       </div>
       <div className="categoriesContainer">

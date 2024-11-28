@@ -81,7 +81,7 @@ const Navbar = ({ setBurger, burger }) => {
         <span className="headerLogo" onClick={() => navigate("/")}>
           <img src={logo} alt="Logo" />
         </span>
-        <span className="navItemLeft">
+        <span className="navItemLeft"> 
           <Link to="/menu" className="navItems-component-Menu">
             Menu
           </Link>
