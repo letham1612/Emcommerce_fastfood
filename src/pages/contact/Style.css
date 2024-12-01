@@ -1,0 +1,136 @@
+/* Cấu trúc container */
+.contact-container {
+    margin-top: 80px; 
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    flex-wrap: wrap;
+  }
+  
+  /* Thông tin liên hệ */
+  .contact-info {
+    flex: 1;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-info h2,
+  .contact-info h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold; /* Để chữ được in đậm */
+  }
+  
+  /* Các liên hệ */
+  .contact-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .contact-info ul li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .contact-info ul li .icon {
+    font-size: 24px;
+    color: #e4002b;
+  }
+  
+  /* Các liên hệ được hiển thị trong khung bo tròn */
+  .contact-item a {
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .contact-item a:hover {
+    background-color: #e4002b;
+    color: white;
+  }
+  
+  .contact-item a:hover .icon {
+    color: white;
+  }
+  
+  /* Form liên hệ */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .contact-form .form-row {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: #e4002b;
+    outline: none;
+  }
+  
+  .submit-button {
+    background-color: #e4002b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;  /* Bo góc cho nút Gửi */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;  /* Đảm bảo nút "Gửi" đầy đủ chiều rộng */
+  }
+  
+  .submit-button:hover {
+    background-color: #c30024;
+  }
+  
+  /* Bản đồ */
+  .contact-map {
+    flex: 1;
+  }
+  
+  .contact-map iframe {
+    border-radius: 10px;
+    height: 450px;
+    border: none;
+  }
+  
+  /* Các tiêu đề khác (Gửi tin nhắn cho chúng tôi và Vị trí cửa hàng) */
+  .contact-info h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold; /* Làm cho chữ đậm như "Thông tin liên hệ" */
+  }
+  .contact-map h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;  
+    font-weight: bold;  
+  }
+  
