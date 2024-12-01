@@ -152,3 +152,20 @@
     width: 100%;
   }
 }
+
+.menu-card2-child1-rating {
+  display: flex;
+  gap: 5px; 
+  align-items: center; 
+  margin-left: 25px;
+}
+.star-filled, .star-empty {
+  font-size: 23px; 
+}
+.star-filled {
+  color: gold; 
+}
+
+.star-empty {
+  color: gray; 
+}

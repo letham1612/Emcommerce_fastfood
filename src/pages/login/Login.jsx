@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Style.css";
-import logo from "../../assets/kfcLogo.svg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -81,7 +80,6 @@ const Login = () => {
         <div className="login-left">
           <h1 className="login-title">ĐẶT MÓN DỄ DÀNG</h1>
           <h1 className="login-title">GIAO HÀNG NHANH CHÓNG</h1>
-          <img src={logo} alt="KFC Logo" className="login-logo" />
         </div>
         <div className="login-right">
           <h2 className="login-heading">ĐĂNG NHẬP</h2>

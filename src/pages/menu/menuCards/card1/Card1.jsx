@@ -1,9 +1,12 @@
 import React from "react";
 import "./Style.css";
 import { toast } from "react-toastify";
+import { FaStar } from 'react-icons/fa';
 import "react-toastify/dist/ReactToastify.css";
 import imgPlaceholder from "../../../../assets/placeholder.webp";
 import logo from '../../../../assets/logo.png';
+import { useNavigate } from "react-router-dom";
+import { CARTS_API } from '../../../../config/ApiConfig';
 
 
 const SkeletonCard = () => (
@@ -24,37 +27,68 @@ const SkeletonCard = () => (
 );
 
 const Card1 = ({ card, setPurchase, purchase, loading }) => {
-  const handleClick = ({ card }) => {
-    const localCart = JSON.parse(localStorage.getItem("cartData")) || [];
-    const index = localCart.findIndex((item) => item.id === card.id);
+  const navigate = useNavigate();
+  const handleNavigateToDetail = () => {
+    navigate(`/product/${card.ID_Product}`); // Điều hướng đến chi tiết sản phẩm
+  };
 
-    if (index >= 0) {
-      localCart[index].quantity += 1;
-    } else {
-      card.quantity = 1;
-      localCart.push(card);
+
+  const handleClick =async (event, card) => {
+    event.stopPropagation(); 
+    try {
+      const token = localStorage.getItem("token");
+  
+      const response = await fetch(CARTS_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, // Thêm token vào header nếu cần
+        },
+        body: JSON.stringify({
+          product_id: card.ID_Product,
+          quantity: 1,
+          price: card.price,
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          toast.error("Vui lòng đăng nhập để thực hiện thao tác!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+          });
+          throw new Error("Vui lòng đăng nhập!");
+        }
+        throw new Error("Đã xảy ra lỗi!");
+      }
+
+      const data = await response.json();
+      
+      // Cập nhật lại purchase state từ API response (ví dụ như giỏ hàng)
+      setPurchase({
+        quantity: data.cart.quantity,  // Giả sử API trả về tổng số lượng sản phẩm trong giỏ
+        subTotal: data.cart.subTotal,  // Giả sử API trả về tổng giá trị giỏ hàng
+        totalAmount: data.cart.totalAmount,  // Giả sử API trả về tổng tiền sau thuế
+      });
+
+      toast.success("🍗 Thêm vào giỏ hàng thành công!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm:", error);
     }
-    localStorage.setItem("cartData", JSON.stringify(localCart));
-
-    const updatedPurchase = { ...purchase };
-    updatedPurchase.quantity += 1;
-    updatedPurchase.subTotal = parseFloat(
-      parseFloat(updatedPurchase.subTotal) + parseFloat(card.price)
-    ).toFixed(2);
-    updatedPurchase.totalAmount = parseFloat(
-      updatedPurchase.subTotal * 1.05
-    ).toFixed(2);
-    setPurchase(updatedPurchase);
-    toast.success("🍗 Thêm vào giỏ hàng thành công!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
   };
 
   return (
@@ -62,8 +96,12 @@ const Card1 = ({ card, setPurchase, purchase, loading }) => {
       {loading ? (
         <SkeletonCard />
       ) : (
-        <div className="menu-childCardBody">
-          <img src={card.image || logo} alt={card.name} className="offer-cardImg" />
+        <div className="menu-childCardBody" onClick={handleNavigateToDetail}>
+          <img
+            src={card.image || logo}
+            alt={card.name}
+            className="offer-cardImg"
+          />
           <p className="menu-cardTitle">{card.name}</p>
           <div className="offer-cardCategory">
             <img
@@ -71,12 +109,26 @@ const Card1 = ({ card, setPurchase, purchase, loading }) => {
               alt=""
             />
           </div>
-          <p className="menu-cardPrice"> {card.price.toLocaleString('vi-VN')} VNĐ</p>
+          <p className="menu-cardPrice">{card.price.toLocaleString("vi-VN")} VNĐ</p>
           <p className="offer-cardCategory-text">{card.description}</p>
+
+          {/* Phần Rating - Ngôi sao */}
+          <div className="card-rating">
+            {Array(5)
+              .fill()
+              .map((_, index) => (
+                <FaStar
+                  key={index}
+                  color={index < card.rating ? "#FFD700" : "#e4e5e9"}
+                  size={20}
+                />
+              ))}
+          </div>
+          
           <div className="offer-button-add">
             <button
               className="offer-card-addToCart"
-              onClick={() => handleClick({ card })}
+              onClick={(event) => handleClick(event, card)}
             >
               Thêm vào giỏ hàng
             </button>

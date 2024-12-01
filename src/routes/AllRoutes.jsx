@@ -19,6 +19,8 @@ import HomeAdmin from "../pages/admin/home/HomeAdmin";
 import AdminList from "../pages/admin/Lists/Lists";
 import AdminAddNew from "../pages/admin/AddNew/AddNew";
 import AdminEdit from "../pages/admin/Edit/Edit";
+import ProductDetail from "../pages/productdetail/ProductDetail";
+
 const AllRoutes = ({ purchase, setPurchase }) => {
   return (
     <div>
@@ -46,6 +48,9 @@ const AllRoutes = ({ purchase, setPurchase }) => {
         <Route path="/account-details" element={<AccountDetails />} />
         <Route path="/delete-account" element={<DeleteAccount />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/product/:id" element={<ProductDetail />} /> 
+
+
 
         <Route path="/admin" element={<HomeAdmin />} />
         {/* <Route path="/admin/user" element={<AdminList type={'user'} />} /> */}

@@ -125,3 +125,9 @@
     width: 300px;
   }
 }
+
+.card-rating {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px; /* Khoảng cách giữa rating và nút "Thêm vào giỏ hàng" */
+}

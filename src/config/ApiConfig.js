@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://192.168.86.94:3000";
+const API_BASE_URL = "http://localhost:3000";
 // const API_BASE_URL = "https://60c5-171-243-48-19.ngrok-free.app";
 
 export const IMAGE_URL = `${API_BASE_URL}/images/`;

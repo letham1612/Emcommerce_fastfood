@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import imgPlaceholder from "../../../../assets/placeholder.webp";
 import logo from '../../../../assets/logo.png';
 import { CARTS_API } from '../../../../config/ApiConfig';
+import { useNavigate } from "react-router-dom";
+import { FaStar } from 'react-icons/fa'; 
 
 
 const SkeletonCard = () => (
@@ -36,8 +38,13 @@ const SkeletonCard = () => (
 );
 
 const Card2 = ({ card, setPurchase, purchase, loading }) => {
-  const handleClick = async ({ card }) => {
-    // event.preventDefault();
+  const navigate = useNavigate();
+  const handleNavigateToDetail = () => {
+    navigate(`/product/${card.ID_Product}`); // Điều hướng đến chi tiết sản phẩm
+  };
+
+  const handleClick = async (event, card) => {
+    event.stopPropagation(); 
 
     try {
       const token = localStorage.getItem('token');
@@ -137,12 +144,30 @@ const Card2 = ({ card, setPurchase, purchase, loading }) => {
     // });
   };
 
+  const renderStars = () => {
+    const rating = card.rating || 0; // Default to 0 if no rating
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <FaStar
+          key={i}
+          className={i < rating ? "star-filled" : "star-empty"}
+          style={{ color: i < rating ? "gold" : "gray" }}
+        />
+      );
+    }
+    return stars;
+  };
+
+
   return (
     <>
       {loading ? (
         <SkeletonCard />
       ) : (
-        <div className="menu-card2-parent">
+        <div className="menu-card2-parent"onClick={handleNavigateToDetail}>
+
+        
           <div className="menu-card2-child1">
             <img
               src={card.image || logo}
@@ -171,10 +196,15 @@ const Card2 = ({ card, setPurchase, purchase, loading }) => {
               <div className="card2-desc">{card.description}</div>
             </div>
           </div>
+            {/* Rating stars before the button */}
+            <div className="menu-card2-child1-rating">
+            {renderStars()}
+          </div>
+          
           <div className="menu-card2-child2">
             <button
               className="offer-card-addToCart"
-              onClick={() => handleClick({ card })}
+              onClick={(event) => handleClick(event, card)}
             >
               Thêm vào giỏ hàng
             </button>
