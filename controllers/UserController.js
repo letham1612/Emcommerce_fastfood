@@ -149,13 +149,14 @@ const updateUser = async (req, res) => {
         } catch (error) {
             return res.status(401).json({ message: 'Invalid token' });
         }
-        const userIdFromToken = decoded.id; // ID người dùng được lưu trong token
-        // Lấy ID từ URL
-        const userId = req.params.id;
-        // Kiểm tra nếu ID từ token khác với ID trong URL (bảo mật)
-        if (userId !== userIdFromToken) {
-            return res.status(403).json({ message: 'You are not authorized to update this user.' });
-        }
+        // const userIdFromToken = decoded.id; // ID người dùng được lưu trong token
+        // // Lấy ID từ URL
+        // const userId = req.params.id;
+        const userId = decoded.id;
+        // // Kiểm tra nếu ID từ token khác với ID trong URL (bảo mật)
+        // if (userId !== userIdFromToken) {
+        //     return res.status(403).json({ message: 'You are not authorized to update this user.' });
+        // }
         const allowedFields = ['username', 'phoneNumber', 'email', 'address'];
         const updatedData = {}; // Khởi tạo đối tượng lưu trữ dữ liệu sẽ được cập nhật
         // Chỉ thêm các trường được phép cập nhật vào updatedData
@@ -165,9 +166,9 @@ const updateUser = async (req, res) => {
             }
         }
         // Nếu có trường mật khẩu trong req.body, trả về lỗi
-        if (req.body.password) {
-            return res.status(400).json({ message: 'Password cannot be updated via this endpoint.' });
-        }
+        // if (!req.body.password) {
+        //     return res.status(400).json({ message: 'Password cannot be updated via this endpoint.' });
+        // }
         // Tìm người dùng và cập nhật thông tin
         const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
             new: true, // Trả về tài liệu đã cập nhật
@@ -196,20 +197,20 @@ const deleteUser = async (req, res) => {
         // Giải mã token
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key');
         const userIdFromToken = decoded.id;
-        // Lấy mật khẩu từ yêu cầu
-        const { password } = req.body;
+        // // Lấy mật khẩu từ yêu cầu
+        // const { id } = req.body;
         // Tìm người dùng theo ID
-        const user = await User.findById(userIdFromToken);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        // Kiểm tra mật khẩu
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(403).json({ message: 'Invalid password' });
-        }
+        // const user = await User.findById(userIdFromToken);
+        // if (!user) {
+        //     return res.status(404).json({ message: 'User not found' });
+        // }
+        // // Kiểm tra mật khẩu
+        // const isMatch = await bcrypt.compare(password, user.password);
+        // if (!isMatch) {
+        //     return res.status(403).json({ message: 'Invalid password' });
+        // }
         // Xóa người dùng
-        const deletedUser = await User.findByIdAndDelete(userIdFromToken);
+        const deletedUser = await User.findByIdAndDelete({ _id: req.params.id });
         if (!deletedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -287,6 +288,45 @@ const getUserGrowth = async (req, res) => {
     }
   };
 
+  const getUserById = async (req, res) => {
+    try {
+        // Lấy token từ header
+        const token = req.headers.authorization?.split(' ')[1]; // Token dạng "Bearer <token>"
+        
+        // Kiểm tra token
+        if (!token) {
+            return res.status(401).json({ message: 'Access denied. No token provided.' });
+        }
+
+        // Giải mã token
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key');
+        } catch (error) {
+            return res.status(401).json({ message: 'Invalid or expired token' });
+        }
+
+        // Lấy user ID từ token
+        const userId = decoded.id;
+
+        // Tìm người dùng trong cơ sở dữ liệu
+        const user = await User.findById(userId).select('-password -refreshToken'); // Loại bỏ password và refreshToken
+
+        // Nếu không tìm thấy người dùng
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Trả về thông tin người dùng
+        res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching user data', error: error.message });
+    }
+};
+
 module.exports = {
   register,
   login,
@@ -297,4 +337,5 @@ module.exports = {
   deleteUser,
   logout,
   getUserGrowth,
+  getUserById,
 };

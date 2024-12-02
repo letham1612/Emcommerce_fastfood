@@ -9,6 +9,7 @@ const typeRoutes = require("./routes/Types.route");
 const cartRouutes = require("./routes/CartRoute")
 const paymentRoutes = require("./routes/payment.route");
 const reviewRoutes = require("./routes/review.route");
+const couponRoutes = require ("./routes/couponRoute")
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
@@ -35,6 +36,7 @@ app.use("/api/types", typeRoutes);
 app.use("/api/carts", cartRouutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/coupons", couponRoutes);
 
 
 
