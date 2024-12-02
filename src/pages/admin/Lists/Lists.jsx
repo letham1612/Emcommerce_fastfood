@@ -2,12 +2,12 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import DataTable from '../../../components/admin/DataTable/DataTable';
 import ProductTable from '../../../components/admin/ProductTable/ProductTable';
 import TypeTable from '../../../components/admin/TypeTable/TypeTable';
 import Navbar from '../../../components/admin/Navbar/Navbar';
 import Sidebar from '../../../components/admin/Sidebar/Sidebar';
 import './lists.scss';
+import UserTable from '../../../components/admin/UserTable/UserTable';
 
 function Lists({ type }) {
     console.log(type)
@@ -41,7 +41,7 @@ function Lists({ type }) {
                         <div></div>
                     }
                     {type === 'user' ? (
-                        <DataTable />
+                        <UserTable />
                     ) : type === 'product' ? (
                         <ProductTable />
                     ) : type === 'type' ? (

@@ -1,0 +1,80 @@
+Container của widget
+  /* Container của các tin nhắn */
+  .rcw-messages-container {
+    padding: 10px;
+    height: 400px;
+    overflow-y: auto;
+    background-color: #ffffff;
+  }
+  
+  /* Tin nhắn của người dùng */
+  .rcw-message {
+    margin-bottom: 10px;
+  }
+  
+  .rcw-message-user {
+    background-color: #ffffff;
+    color: #fff;
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  
+  /* Tin nhắn của bot */
+  .rcw-message-client {
+    background-color: #ffffff;
+    color: #000;
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  
+  /* Ô nhập tin nhắn */
+  .rcw-new-message {
+    border: 1px solid #000000;
+    /* border-radius: 5px;
+    padding: 10px; */
+    text-align: left; /* Căn lề trái cho văn bản */ 
+    right: 10px; /* Căn sang phải */
+    bottom: 10px; /* Căn cách đáy */
+    content: "Nhập câu hỏi của bạn...";
+  }
+  
+.rcw-send {
+    position: absolute;
+    right: 10px; /* Căn sang phải */
+    bottom: 10px; /* Căn cách đáy */
+    /* background-color: #f20000; Đổi màu theo ý muốn */
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .rcw-send:hover {
+    background-color: #000000; /* Màu khi hover */
+  }
+  
+  /* Hoặc sửa lại nút launcher nếu cần */
+  .rcw-launcher {
+    bottom: 20px; /* Khoảng cách từ đáy */
+    right: 20px; /* Khoảng cách từ bên phải */
+    /* background-color: #ff0000; Nền màu đỏ */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Làm nút tròn */
+    display: flex; /* Sử dụng flexbox */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+  }
+  
+  /* Logo bên trong launcher */
+  .rcw-launcher img {
+    width: 60%; /* Kích thước logo (tùy chỉnh %) */
+    height: auto; /* Duy trì tỉ lệ gốc */
+  }
+  .rcw-launcher:hover {
+    background-color: #000000;
+  }
+
+
+  

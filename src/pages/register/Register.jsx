@@ -28,14 +28,18 @@ const Register = () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                username: firstName + " " + lastName,
+                phoneNumber: phoneNumber,
                 email: email,
-                password: password
+                password: password,
+                resPassword: password
             })
         });
 
+        
         if (!response.ok) {
           // Thông báo đăng nhập thành công
-          toast.error("Đăng nhập thất bại!", {
+          toast.error("Đăng ký thất bại!", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -44,13 +48,13 @@ const Register = () => {
             draggable: true,
             theme: "colored",
           });
-            throw new Error("Đăng nhập thất bại!");
+          throw new Error("Đăng ký thất bại!");
         }
-
-        const data = await response.json();
+        
+        // const data = await response.json();
         
         // Thông báo đăng nhập thành công
-        toast.success("Đăng nhập thành công.", {
+        toast.success("Đăng ký thành công.", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -60,20 +64,10 @@ const Register = () => {
             theme: "colored",
         });
         console.log(response.status)
-        if (response.status === 200){
-          navigate("/");
-        }
-        else{
-          navigate("/admin");
-        }
-        
 
-        setTimeout(() => {
-            // Lưu token người dùng vào localStorage
-            localStorage.setItem('token', data["token"]);
-        }, 2000);
+        navigate("/login");
     } catch (error) {
-        console.error("Lỗi đăng nhập:", error);
+        console.error("Lỗi đăng ký:", error);
     }
 };
 

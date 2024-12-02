@@ -14,7 +14,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("Con chó Khiêm"); // Giả định có một tên người dùng
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,7 +45,7 @@ const Login = () => {
         }
 
         const data = await response.json();
-        
+        // console.log(data)
         // Thông báo đăng nhập thành công
         toast.success("Đăng nhập thành công.", {
             position: "top-right",
@@ -69,6 +68,7 @@ const Login = () => {
         setTimeout(() => {
             // Lưu token người dùng vào localStorage
             localStorage.setItem('token', data["token"]);
+            localStorage.setItem('refreshToken', data["refreshToken"]);
         }, 2000);
     } catch (error) {
         console.error("Lỗi đăng nhập:", error);
