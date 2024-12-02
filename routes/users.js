@@ -8,7 +8,7 @@ router.post('/changePassword', UserController.changePassword);
 router.post('/logout',UserController.logout);
 router.get('/', UserController.getUser);
 router.post('/refresh-token',UserController.refreshAccessToken);
-
+router.get('/usergrowth', UserController.getUserGrowth);
 // Cập nhật thông tin người dùng
 router.put('/:id', UserController.updateUser);
 // Xóa tài khoản người dùng

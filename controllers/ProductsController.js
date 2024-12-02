@@ -60,7 +60,7 @@ exports.getAllProducts = async (req, res) => {
 // Lấy sản phẩm theo ID_Product
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findOne({ ID_Product: req.params.id }); // Sử dụng ID_Product để tìm kiếm
+    const product = await Product.findOne({ ID_Product: req.params.id }).populate('reviews'); 
     if (!product) {
       console.log('Product not found with ID_Product:', req.params.id);
       return res.status(404).json({ message: 'Product not found' });

@@ -5,13 +5,10 @@ const Payment = require("../models/Payment");
 
 const createPayment = async (req, res) => {
     try {
-        const { amount } = req.body;
+        const { amount, orderInfo, redirectUrl, ipnUrl } = req.body;
         const accessKey = 'F8BBA842ECF85';
         const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
         const partnerCode = 'MOMO';
-        const orderInfo = 'pay with MoMo';
-        const redirectUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
-        const ipnUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
         const requestType = "payWithMethod";
         const orderId = partnerCode + new Date().getTime();
         const requestId = orderId;

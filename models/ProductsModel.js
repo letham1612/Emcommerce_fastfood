@@ -10,6 +10,9 @@ const ProductSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     newprice: { type: Number },
     image: { type: String },
+    averageRating: { type: Number, default: 0 },
+    reviewCount: { type: Number, default: 0 },
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
 }, 
 { timestamps: true });
 

@@ -1,6 +1,6 @@
 // controllers/cartController.js
 const Cart = require('../models/CartModel');
-const Product = require('../models/ProductsModel')
+const Product = require('../models/productsModel')
 
 // Thêm sản phẩm vào giỏ hàng
 exports.addToCart = async (req, res) => {

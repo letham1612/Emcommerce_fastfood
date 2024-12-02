@@ -242,7 +242,50 @@ const logout = async (req, res) => {
         res.status(500).json({ message: 'Error during logout', error: error.message });
     }
 };
-
+ // Lấy số lượng người dùng và tỷ lệ tăng trưởng
+const getUserGrowth = async (req, res) => {
+    try {
+      const now = new Date();
+  
+      // Tính ngày đầu tiên của tuần hiện tại
+      const startOfCurrentWeek = new Date(now);
+      startOfCurrentWeek.setDate(now.getDate() - now.getDay());
+      startOfCurrentWeek.setHours(0, 0, 0, 0);
+  
+      // Tính ngày đầu tiên của tuần trước
+      const startOfLastWeek = new Date(startOfCurrentWeek);
+      startOfLastWeek.setDate(startOfCurrentWeek.getDate() - 7);
+  
+      // Tính ngày cuối cùng của tuần trước
+      const endOfLastWeek = new Date(startOfCurrentWeek);
+  
+      // Đếm số lượng người dùng trong tuần hiện tại
+      const currentCount = await User.countDocuments({
+        createdAt: { $gte: startOfCurrentWeek }
+      });
+  
+      // Đếm số lượng người dùng trong tuần trước
+      const previousWeekCount = await User.countDocuments({
+        createdAt: { $gte: startOfLastWeek, $lt: endOfLastWeek }
+      });
+  
+      // Tính tỷ lệ tăng trưởng
+      const growthPercentage = previousWeekCount === 0
+        ? 100 // Nếu tuần trước không có người dùng
+        : ((currentCount - previousWeekCount) / previousWeekCount) * 100;
+  
+      res.status(200).json({
+        success: true,
+        data: {
+          currentCount,
+          previousWeekCount,
+          growthPercentage: growthPercentage.toFixed(2) // Làm tròn 2 chữ số
+        }
+      });
+    } catch (err) {
+      res.status(500).json({ success: false, message: err.message });
+    }
+  };
 
 module.exports = {
   register,
@@ -253,4 +296,5 @@ module.exports = {
   updateUser,
   deleteUser,
   logout,
+  getUserGrowth,
 };
