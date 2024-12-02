@@ -1,5 +1,5 @@
-const API_BASE_URL = "http://localhost:3000";
-// const API_BASE_URL = "https://60c5-171-243-48-19.ngrok-free.app";
+//const API_BASE_URL = "http://localhost:3000";
+ const API_BASE_URL = "https://314d-222-253-140-4.ngrok-free.app";
 
 export const IMAGE_URL = `${API_BASE_URL}/images/`;
 export const PAYMENT_URL = `${API_BASE_URL}/api/payments`;

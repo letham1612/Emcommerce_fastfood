@@ -1,0 +1,84 @@
+/* Style.css */
+.order-list {
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 80px; 
+  }
+  
+  .order-list h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    color: #333;
+    
+  }
+  
+  /* Container chứa các thẻ đơn hàng */
+.order-container {
+    display: flex;
+    flex-wrap: wrap; /* Tự động xuống hàng khi không đủ chỗ */
+    gap: 1.5rem; /* Khoảng cách giữa các thẻ */
+    justify-content: center; /* Căn giữa nội dung */
+  }
+  
+  /* Card đơn hàng */
+  .order-card {
+    width: 250px; /* Chiều rộng của mỗi thẻ */
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-5px); /* Hiệu ứng hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Thông tin đơn hàng */
+  .order-info p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  /* Nút xem chi tiết */
+  .view-details-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgb(205, 45, 45);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  
+  .view-details-btn:hover {
+    background: rgb(155, 24, 24);
+  }
+  
+  @media (max-width: 600px) {
+    .order-list {
+      padding: 1rem;
+    }
+  
+    .order-item {
+      padding: 1rem;
+    }
+  
+    .view-details-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  

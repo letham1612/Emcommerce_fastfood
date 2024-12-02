@@ -40,7 +40,7 @@ const AccountDetails = () => {
         />
         <h2>WELCOME, {firstName} !</h2>
         <Link to="/">Đăng xuất</Link>
-        <Link to="/orders">Đơn hàng đã đặt</Link>
+        <Link to="/order-list">Đơn hàng đã đặt</Link>
         <Link to="/favourites">Đơn hàng yêu thích</Link>
         <Link to="/addresses">Địa chỉ của bạn</Link>
         <Link to="/account-details">Chi tiết tài khoản</Link>
