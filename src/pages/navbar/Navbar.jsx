@@ -167,14 +167,16 @@ const Navbar = ({ setBurger, burger }) => {
   // Polling every 5 seconds to fetch cart data
   useEffect(() => {    
     // Set intervals for both fetchCartData and fetchUserData
-    const cartInterval = setInterval(fetchCartData, 5000); // 5000ms = 5 seconds
-    const userInterval = setInterval(fetchUserData, 10000); // 10000ms = 10 seconds
+    // const cartInterval = setInterval(fetchCartData, 5000); // 5000ms = 5 seconds
+    // const userInterval = setInterval(fetchUserData, 10000); // 10000ms = 10 seconds
 
     // Cleanup both intervals when the component unmounts
-    return () => {
-      clearInterval(cartInterval);
-      clearInterval(userInterval);
-    };
+    // return () => {
+      // clearInterval(cartInterval);
+      // clearInterval(userInterval);
+    // };
+    fetchCartData()
+    fetchUserData()
   }, []);
 
   const headerFunction = () => {

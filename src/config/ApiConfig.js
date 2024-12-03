@@ -1,10 +1,10 @@
-//const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "http://localhost:3000";
 //const API_BASE_URL = "https://314d-222-253-140-4.ngrok-free.app";
-const HOST_IP = "192.168.47.200"
+//const HOST_IP = "192.168.47.200"
 
-const API_BASE_URL = `http://${HOST_IP}:3000`;
-// export const WEBSOCKET_URL = `ws://localhost:8000/`;
-export const WEBSOCKET_URL = `ws://${HOST_IP}:8000/`;
+//const API_BASE_URL = `http://${HOST_IP}:3000`;
+export const WEBSOCKET_URL = `ws://localhost:8000/`;
+// export const WEBSOCKET_URL = `ws://${HOST_IP}:8000/`;
 // const API_BASE_URL = "https://60c5-171-243-48-19.ngrok-free.app";
 
 export const IMAGE_URL = `${API_BASE_URL}/images/`;
