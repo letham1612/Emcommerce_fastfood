@@ -107,6 +107,12 @@
   margin-right: 5px;
 }
 
+.card-rating {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px; /* Khoảng cách giữa rating và nút "Thêm vào giỏ hàng" */
+}
+
 @keyframes shimmer {
   0% {
     background-position: -468px 0;

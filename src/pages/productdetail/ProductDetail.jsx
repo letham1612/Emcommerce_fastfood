@@ -13,12 +13,15 @@ import {
   HStack,
   Divider,
 } from "@chakra-ui/react";
-import { PRODUCTS_API, CARTS_API } from "../../config/ApiConfig";
+import { PRODUCTS_API, CARTS_API, IMAGE_URL } from "../../config/ApiConfig";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaShoppingCart,FaUser } from "react-icons/fa";
 import "./Style.css"; // Import định dạng từ file CSS riêng
 import { toast } from "react-toastify";
+import logo from '../../assets/logo.png';
+
 
 const ProductDetail = () => {
+  const token = localStorage.getItem("token");
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +33,12 @@ const ProductDetail = () => {
         const response = await fetch(`${PRODUCTS_API}/${id}`);
         if (!response.ok) throw new Error(`Không tìm thấy sản phẩm: ${response.status}`);
         const data = await response.json();
+
+        // Đảm bảo URL hình ảnh hợp lệ
+        data.image = data.image ? IMAGE_URL + data.image : logo;
+        
         setProduct(data);
+
       } catch (error) {
         console.error("Lỗi khi gọi API chi tiết sản phẩm:", error.message);
         alert("Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau.");
@@ -155,17 +163,24 @@ const ProductDetail = () => {
               <Flex className="rating-stars">
                 <HStack spacing="2">
                   {/* Render ngôi sao từ rating */}
-                  {renderStars(product.rating || 0)}
+                  {renderStars(product.averageRating || 0)}
                 </HStack>
-                <Text className="rating-text">({product.rating || 0} / 5 từ {product.reviews || 0} lượt đánh giá)</Text>
+                <Text className="rating-text">({product.averageRating || 0} / 5 từ {product.reviewCount || 0} lượt đánh giá)</Text>
               </Flex>
             </Box>
 
-            {/* Nút thêm vào giỏ hàng */}
-            <Button className="add-to-cart-btn" onClick={handleAddToCart}>
-              <Icon as={FaShoppingCart} mr="2" />
-              Thêm vào giỏ hàng
-            </Button>
+            {token ? (
+              <Button className="add-to-cart-btn" onClick={handleAddToCart}>
+                <Icon as={FaShoppingCart} mr="2" />
+                Thêm vào giỏ hàng
+              </Button>
+            ) : (
+              <Button className="goto-to-login-btn" disabled>
+                <Text>
+                  Vui lòng đăng nhập
+                </Text>
+              </Button>
+            )}
           </Box>
         </Stack>
 

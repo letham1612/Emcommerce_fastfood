@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./App.css";
-import { useLocation } from 'react-router-dom';
 
 import Navbar from "./pages/navbar/Navbar";
 import CustomDrawer from "./components/drawer/Drawer";
@@ -8,6 +8,7 @@ import Footer from "./pages/footer/Footer";
 import AllRoutes from "./routes/AllRoutes";
 import { ToastContainer } from "react-toastify";
 
+import ChatWidget from "./components/chatbox/ChatWidget";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,40 +19,29 @@ function App() {
     hopePrice: 0,
     totalAmount: 0,
   };
+
   const [burger, setBurger] = useState(false);
   const [purchase, setPurchase] = useState(initialPurchase);
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin');
-  // setPurchase(initialPurchase)
-  localStorage.setItem("userPurchase", JSON.stringify(purchase));
+  const isAdminPage = location.pathname.startsWith("/admin");
 
-  // localStorage.clear()
-  // for (let key in localStorage) {
-  //   if (key !== "token") {
-  //     localStorage.removeItem(key);
-  //   }
-  // }
-
-  // const totalAmount = 0;
-  // const cartIconCount = 2;
   const toggleDrawer = () => {
     setBurger(!burger);
   };
 
   return (
     <div className="App">
-      {!isAdminPage && ( // kiểm tra nếu không phải là trang admin thì hiển thị CustomDrawer hoặc Navbar
-          burger ? (
-              <CustomDrawer
-                  isOpen={burger}
-                  onClose={toggleDrawer}
-                  purchase={purchase}
-              />
-          ) : (
-              <Navbar setBurger={setBurger} burger={burger} purchase={purchase} />
-          )
-      )}
-      
+      {!isAdminPage &&
+        (burger ? (
+          <CustomDrawer
+            isOpen={burger}
+            onClose={toggleDrawer}
+            purchase={purchase}
+          />
+        ) : (
+          <Navbar setBurger={setBurger} burger={burger} purchase={purchase} />
+        ))}
+
       <AllRoutes purchase={purchase} setPurchase={setPurchase} />
 
       <ToastContainer
@@ -67,9 +57,10 @@ function App() {
         theme="colored"
       />
 
-      {!isAdminPage && ( // kiểm tra nếu không phải là trang admin thì hiển thị CustomDrawer hoặc Navbar
-        <Footer />
-      )}
+      {/* Sử dụng ChatWidget */}
+      <ChatWidget />
+
+      {!isAdminPage && <Footer />}
     </div>
   );
 }

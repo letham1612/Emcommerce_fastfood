@@ -59,6 +59,9 @@ function Sidebar() {
                     </Link>
                     <Link to="/" style={{ textDecoration: 'none' }}>
                         <li onClick={() => {
+                            localStorage.removeItem("token");
+                            localStorage.removeItem("refreshToken");
+                            
                             toast.info("Đã đăng xuất tài khoản quản trị.", {
                                     position: "top-right",
                                     autoClose: 2000,

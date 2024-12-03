@@ -53,16 +53,17 @@ const AllRoutes = ({ purchase, setPurchase }) => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/product/:id" element={<ProductDetail />} />
 
-        <Route path="/order-details/:orderId" element={<OrderDetails />} />
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
 
         <Route path="/order-list" element={<OrderList/>} />
  
 
 
+    
 
         <Route path="/admin" element={<HomeAdmin />} />
         {/* <Route path="/admin/user" element={<AdminList type={'user'} />} /> */}
-        <Route path="/admin/user" element={<NotFound />} />
+        <Route path="/admin/user" element={<AdminList type={'user'} />} />
         <Route path="/admin/product" element={<AdminList type={'product'} />} />
         <Route path="/admin/type" element={<AdminList type={'type'} />} />
         {/* <Route path="/admin/order" element={<AdminList type={'order'} />} /> */}
