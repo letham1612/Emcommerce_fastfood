@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MY_ORDERS_API } from "../../config/ApiConfig";
 import './Style.css';
@@ -17,7 +17,7 @@ const OrderList = () => {
     if (!username) return; 
     
     try {
-      // Gọi API bằng axios
+      // Gọi API bằng fetch
       const response = await fetch(`${MY_ORDERS_API}/${username}`, {
         method: "GET",
         headers: {
@@ -27,19 +27,22 @@ const OrderList = () => {
       });
 
       if (response.status === 200) {
-        setOrders(response.data); 
+        const data = await response.json();
+        setOrders(data); 
       } else {
         setError("Lỗi khi tải danh sách đơn hàng.");
       }
     } catch (err) {
       console.error("Lỗi khi gọi API:", err); 
       setError("Đã xảy ra lỗi khi tải danh sách đơn hàng.");
-    } finally {
-      setLoading(false); 
-    }
+    } 
   };
 
- 
+  // Gọi fetchOrders khi component được render lần đầu tiên
+  if (orders.length === 0 && !loading && !error) {
+    fetchOrders(); // Gọi API nếu chưa có dữ liệu đơn hàng
+  }
+
   return (
     <div className="main-content">
       <div className="order-list">

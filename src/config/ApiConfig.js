@@ -25,4 +25,4 @@ export const PRODUCT_IMAGE_API = `${API_BASE_URL}/api/uploads`;
 
 export const CARTS_API = `${API_BASE_URL}/api/carts`;
 export const MY_ORDERS_API = `${API_BASE_URL}/api/orders/myorders`;
-export const ORDER_DETAILS_API = `${API_BASE_URL}/api/orderdetails`;
+export const ORDER_DETAILS_API = `${API_BASE_URL}/api/orders`; // Adjusted API endpoint

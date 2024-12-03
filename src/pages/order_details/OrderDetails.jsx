@@ -38,12 +38,12 @@ const OrderDetails = () => {
   }, [orderId]);
 
   const {
-    ID_Order,
+    _id,
     createdAt,
-    total_price,
-    status,
-    delivery_address,
-    details = [],
+    totalPrice,
+    orderStatus,
+    shippingInfo: { address, city, state, pincode },
+    orderItems = [], // Default to empty array if no items
   } = orderDetails || {};
   return (
     <div className="main-content">
@@ -60,21 +60,21 @@ const OrderDetails = () => {
           <h2>Chi tiết Đơn hàng #{orderDetails._id}</h2>
           <div className="order-summary">
           <p>
-            <strong>Mã đơn hàng:</strong> {ID_Order}
-          </p>
-          <p>
-            <strong>Ngày tạo:</strong>{" "}
-            {new Date(createdAt).toLocaleString("vi-VN")}
-          </p>
-          <p>
-            <strong>Tổng giá trị:</strong> {total_price} VND
-          </p>
-          <p>
-            <strong>Trạng thái:</strong> {status}
-          </p>
-          <p>
-            <strong>Địa chỉ giao hàng:</strong> {delivery_address}
-          </p>
+              <strong>Mã đơn hàng:</strong> {_id}
+            </p>
+            <p>
+              <strong>Ngày tạo:</strong>{" "}
+              {new Date(createdAt).toLocaleString("vi-VN")}
+            </p>
+            <p>
+              <strong>Tổng giá trị:</strong> {totalPrice} VND
+            </p>
+            <p>
+              <strong>Trạng thái:</strong> {orderStatus}
+            </p>
+            <p>
+              <strong>Địa chỉ giao hàng:</strong> {address}, {city} {state} {pincode}
+            </p>
         </div>
 
           <h3>Danh sách sản phẩm</h3>
@@ -88,7 +88,7 @@ const OrderDetails = () => {
               </tr>
             </thead>
             <tbody>
-               {details.map((item) => (
+              {orderItems.map((item) => (
               <tr key={item.ID_Product._id}>
                 <td>{item.ID_Product.name}</td>
                 <td>{item.quantity}</td>
