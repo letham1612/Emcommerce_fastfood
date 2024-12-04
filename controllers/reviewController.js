@@ -26,3 +26,18 @@ exports.addReview = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+// Thêm API để lấy đánh giá theo sản phẩm
+exports.getReviewsByProduct = async (req, res) => {
+  try {
+    const { product_id } = req.params;
+
+    // Tìm các đánh giá liên quan đến sản phẩm
+    const reviews = await Review.find({ ID_Product: product_id })
+      .populate('user_id', 'name') // Lấy tên của người dùng từ bảng User
+      .sort({ createdAt: -1 }); // Sắp xếp theo thời gian gần nhất
+
+    res.status(200).json({ success: true, data: reviews });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

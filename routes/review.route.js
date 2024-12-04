@@ -4,5 +4,6 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const reviewController = require('../controllers/reviewController')
 
 router.post('/',authMiddleware, reviewController.addReview);
+router.get('/:product_id', reviewController.getReviewsByProduct);
 
 module.exports = router;
